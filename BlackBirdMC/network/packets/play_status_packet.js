@@ -2,14 +2,14 @@ const BinaryStream = require("bbmc-binarystream");
 const PacketBase = require("../packet_base");
 const PacketIdentifiers = require("../packet_identifiers");
 
-class RequestNetworkSettingsPacket extends PacketBase {
+class PlayStatusPacket extends PacketBase {
     /**
      * @type {Number}
      */
-    client_protocol;
+    status;
 
     constructor() {
-        super(PacketIdentifiers.REQUEST_NETWORK_SETTINGS);
+        super(PacketIdentifiers.PLAY_STATUS);
     }
 
     /**
@@ -17,7 +17,7 @@ class RequestNetworkSettingsPacket extends PacketBase {
      * @param {BinaryStream} stream 
      */
     read_body(stream) {
-        this.client_protocol = stream.readIntBE();
+        this.status = stream.readIntBE();
     }
 
     /**
@@ -25,8 +25,8 @@ class RequestNetworkSettingsPacket extends PacketBase {
      * @param {BinaryStream} stream
      */ 
     write_body(stream) {
-        stream.writeIntBE(this.client_protocol);
+        stream.writeIntBE(this.status);
     }
 }
 
-module.exports = RequestNetworkSettingsPacket;
+module.exports = PlayStatusPacket;

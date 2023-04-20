@@ -31,7 +31,6 @@ class PacketBase {
      * @param {BinaryStream} stream 
      */
     read(stream) {
-        stream.readVarInt();
         this.read_body(stream);
     }
 

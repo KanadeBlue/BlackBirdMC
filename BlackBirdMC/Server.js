@@ -34,7 +34,7 @@ class Server {
             let addr = connection.address.toString();
             if (!this.players.has(addr)) {
                 this.players.set(addr, new Player(connection));
-                console.log("ddas");
+                console.log(connection);
             }
             console.log(`${connection.address.name}:${connection.address.port} connected!`);
         });

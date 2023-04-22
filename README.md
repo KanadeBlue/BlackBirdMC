@@ -14,12 +14,7 @@ BlackBirdMC is an open-source bedrock server software written in Javascript.
 
 | Node Version | Supported          |
 | ------------ | ------------------ |
-|   20.0.x     | :white_check_mark: |
-|   19.0.x     | :white_check_mark: |
-|   18.0.x     | :white_check_mark: |
-|   17.0.x     | :white_check_mark: |
-|   16.0.x     | :white_check_mark: |
-|   15.0.x     | :white_check_mark: |
+| > 15.0.x     | :white_check_mark: |
 | < 14.16.0    | :x:                |
 
 ## Status

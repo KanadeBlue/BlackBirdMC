@@ -1,7 +1,9 @@
 const binary_stream = require("bbmc-binarystream");
 const text_types = require("../constants/text_types");
+const PacketBase = require("../packet_base");
+const PacketIdentifiers = require("../packet_identifiers");
 
-class textPacket {
+class textPacket extends PacketBase {
     typeID;
     sourceUserName;
     message;
@@ -9,10 +11,13 @@ class textPacket {
     xuid;
     platformChatID;
 
-    /**
- * 
- * @param {binary_stream} stream 
- */
+    constructor() {
+        super(PacketIdentifiers.TEXT);
+    }
+
+    /** 
+     * @param {binary_stream} stream 
+    **/
 read(stream) {
     this.typeID = stream.readUnsignedByte();
     switch (this.typeID) {

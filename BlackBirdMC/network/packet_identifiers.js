@@ -5,6 +5,8 @@ class PacketIdentifiers {
     static NETWORK_SETTINGS = 0x8f;
     static PLAY_STATUS = 0x02;
     static LOGIN = 0x01;
+    static DISCONNECT = 0x05;
+    static TEXT = 0x09;
 }
 
 module.exports = PacketIdentifiers;

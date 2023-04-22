@@ -36,7 +36,7 @@ class Player {
     handle_packet(buffer) {
         let stream = new BinaryStream(buffer);
         let packet_id = stream.readVarInt();
-        console.log(packet_id.toString(16));
+        //console.log(packet_id.toString(16));
         switch(packet_id) {
             case PacketIdentifiers.REQUEST_NETWORK_SETTINGS:
                 let request_network_settings = new RequestNetworkSettingsPacket();

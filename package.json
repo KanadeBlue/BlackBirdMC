@@ -1,0 +1,31 @@
+{
+  "name": "blackbirdmc",
+  "version": "0.1.0",
+  "description": "Blackbird is a bedrock open source software, written in javascript.",
+  "main": "BlackBirdMC/index.js",
+  "dependencies": {
+    "bbmc-binarystream": "^1.0.0",
+    "bbmc-chunkutils": "github:MFDGaming/BBMC-ChunkUtils",
+    "bbmc-lang": "^0.2.8",
+    "bbmc-nbt": "^1.0.0",
+    "bbmc-raknet": "^1.0.3",
+    "snappy": "^7.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm run BlackBirdMC/resources/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlackBirdMC/Server.git"
+  },
+  "keywords": [
+    "Minecraft"
+  ],
+  "author": "BlackBirdMC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BlackBirdMC/Server/issues"
+  },
+  "homepage": "https://github.com/BlackBirdMC/Server#readme"
+}

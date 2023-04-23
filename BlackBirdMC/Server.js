@@ -1,10 +1,8 @@
 
 const { RakNetServer, Frame, ReliabilityTool, InternetAddress, Connection } = require("bbmc-raknet");
 const Player = require("./player");
-const GamePacket = require("./network/packets/game_packet");
-const PacketIdentifiers = require("./network/packet_identifiers");
-const BinaryStream = require("bbmc-binarystream");
 const Language = require("./language/language");
+const PacketHandler = require("./network/loaders/packet_handler");
 
 class Server {
     /**
@@ -44,19 +42,7 @@ class Server {
             console.log(`${connection.address.name}:${connection.address.port} connected!`);
         });
         this.raknet_server.on("packet", (stream, connection) => {
-            let addr = connection.address.toString();
-            if (this.players.has(addr)) {
-                let player = this.players.get(addr);
-                let packet_id = stream.readUnsignedByte();
-                if (packet_id == PacketIdentifiers.GAME) {
-                    let game = new GamePacket(player.enable_compression, player.compression_algorithm);
-                    game.read(stream);
-                    game.buffers.forEach((buffer) => {
-                        player.handle_packet(buffer);
-                    });
-                }
-            }
-            console.log(`${connection.address.name}:${connection.address.port} sent a packet`);
+            PacketHandler.handler(stream, connection);
         });
         console.log(this.language.server("loaded"));
     }

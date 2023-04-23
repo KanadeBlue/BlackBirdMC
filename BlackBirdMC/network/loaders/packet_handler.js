@@ -8,7 +8,7 @@ class PacketHandler {
             let packet_id = stream.readUnsignedByte();
             switch (packet_id) {
                 case PacketIdentifiers.GAME: 
-                    let game_packet = new GamePacket(connection.enable_compression, compression_algorithm);
+                    let game_packet = new GamePacket(connection.enable_compression, connection.compression_algorithm);
                     game_packet.read(stream);
                     game_packet.buffers.forEach((buffer) => {
                         connection.handle_packet(buffer);

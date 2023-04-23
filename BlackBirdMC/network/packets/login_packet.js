@@ -19,8 +19,8 @@ class LoginPacket extends PacketBase {
      */
     read(stream) {
         this.protocolVersion = stream.readIntBE();
-        this.loginTokens = stream.readLoginTokens();
-        console.log(this.loginTokens);
+        //this.loginTokens = stream.readLoginTokens();
+        //console.log(this.loginTokens);
     }
 
     /**
@@ -29,8 +29,8 @@ class LoginPacket extends PacketBase {
      */ 
     write(stream) {
         stream.writeIntBE(this.protocolVersion);
-        stream.writeLoginTokens(this.loginTokens);
-        stream.writeByteArrayVarInt(stream.buffer);
+        //stream.writeLoginTokens(this.loginTokens);
+        //stream.writeByteArrayVarInt(stream.buffer);
     }
 }
 

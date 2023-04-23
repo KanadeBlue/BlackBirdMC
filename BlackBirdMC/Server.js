@@ -42,7 +42,7 @@ class Server {
             console.log(`${connection.address.name}:${connection.address.port} connected!`);
         });
         this.raknet_server.on("packet", (stream, connection) => {
-            PacketHandler.handler(stream, connection);
+            PacketHandler.handler(stream, connection, this);
         });
         console.log(this.language.server("loaded"));
     }

@@ -14,9 +14,8 @@ class PacketHandler {
                     game_packet.read(stream);
                     game_packet.buffers.forEach((buffer) => {
                         player.handle_packet(buffer);
-                        console.log(buffer);
                     })
-                    
+                    break;
             }
         console.log(`${connection.address.name}:${connection.address.port} sent a packet`);
     }

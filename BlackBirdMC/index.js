@@ -1,4 +1,4 @@
-const Server = require("./Server");
+const Server = require("./server");
 
 (() => {
     const instance = new Server();

@@ -3,6 +3,7 @@ const { RakNetServer, Frame, ReliabilityTool, InternetAddress, Connection } = re
 const Player = require("./player");
 const Language = require("./language/language");
 const PacketHandler = require("./network/loaders/packet_handler");
+const ColorFormat = require("./utils/color_format");
 
 class Server {
     /**
@@ -44,7 +45,7 @@ class Server {
         this.raknet_server.on("packet", (stream, connection) => {
             PacketHandler.handler(stream, connection, this);
         });
-        console.log(this.language.server("loaded"));
+        console.log(ColorFormat.getcolor("Red") + this.language.server("loaded") + ColorFormat.getcolor("Reset"));
     }
 }
 

@@ -1,0 +1,44 @@
+// constant values with capital snake case
+
+class ColorFormat {
+    static console_bold = "\u001b[1m";
+    static console_obfuscated = "";
+    static console_italic = "\u001b[3m";
+    static console_underline = "\u001b[4m";
+    static console_strike = "\u001b[9m";
+    static console_reset = "\u001b[m";
+    static console_black = "\u001b[38;5;16m";
+    static console_dark_purple = "\u001b[38;5;19m";
+    static console_dark_green = "\u001b[38;5;3m";
+    static console_dark_aqua = "\u001b[38;5;37m";
+    static console_dark_red = "\u001b[38;5;124m";
+    static console_dark_gray = "\u001b[38;5;59m";
+    static console_gold = "\u001b[38;5;214m";
+    static console_gray = "\u001b[38;5;145m";
+    static console_blue = "\u001b[38;5;63m";
+    static console_green = "\u001b[38;5;83m";
+    static console_aqua = "\u001b[38;5;87m";
+    static console_red = "\u001b[38;5;203m";
+    static console_purple = "\u001b[38;5;207m";
+    static console_yellow = "\u001b[38;5;227m";
+    static console_white = "\u001b[38;5;231m";
+    static console_minecoin_gold = "\u001b[38;5;185m";
+
+
+    static getcolor(color) {
+        // Todo Convert color to ingame if send by ingame.
+        let color_lower_case = color.toLowerCase();
+        switch (color_lower_case) {
+            case "reset":
+                return this.console_reset;
+            case "red":
+                return this.console_red;
+            case "black":
+                return this.console_black;
+            case "dark purple":
+                return this.console_dark_purple;
+        }
+    }
+}
+
+module.exports = ColorFormat;

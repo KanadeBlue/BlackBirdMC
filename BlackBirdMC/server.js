@@ -45,7 +45,7 @@ class Server {
         this.raknet_server.on("packet", (stream, connection) => {
             PacketHandler.handler(stream, connection, this);
         });
-        console.log(ColorFormat.getcolor("Red") + this.language.server("loaded") + ColorFormat.getcolor("Reset"));
+        console.log(ColorFormat.get_color("Red") + this.language.server("loaded") + ColorFormat.get_color("Reset"));
     }
 }
 

@@ -4,6 +4,7 @@ const Player = require("./player");
 const Language = require("./language/language");
 const PacketHandler = require("./network/loaders/packet_handler");
 const ColorFormat = require("./utils/color_format");
+const ErrorHandler = require("./utils/error_handler");
 
 class Server {
     /**
@@ -45,8 +46,15 @@ class Server {
         this.raknet_server.on("packet", (stream, connection) => {
             PacketHandler.handler(stream, connection, this);
         });
-        console.log(ColorFormat.get_color("Red") + this.language.server("loaded") + ColorFormat.get_color("Reset"));
+        console.log(ColorFormat.get_color("Green") + this.language.server("loaded") + ColorFormat.get_color("Reset"));
     }
 }
+
+process.on("uncaughtException", (e) => {
+    ErrorHandler.write_error(e);
+    console.log(ColorFormat.get_color("red") + e.stack + ColorFormat.get_color("reset"));
+    console.log(ColorFormat.get_color("green") + 'Error happend and crashed the server.' + ColorFormat.get_color("reset"));
+    process.exit(0);
+});
 
 module.exports = Server;

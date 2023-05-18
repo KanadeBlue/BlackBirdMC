@@ -1,4 +1,4 @@
-const {Frame, ReliabilityTool, InternetAddress, Connection} = require("bbmc-raknet");
+const {Frame, ReliabilityTool} = require("bbmc-raknet");
 const BinaryStream = require("bbmc-binarystream");
 const PacketIdentifiers = require("./network/packet_identifiers");
 const RequestNetworkSettingsPacket = require("./network/packets/request_network_settings_packet");
@@ -39,7 +39,7 @@ class Player {
         console.log(packet_id.toString(16));
         switch(packet_id) {
             case PacketIdentifiers.REQUEST_NETWORK_SETTINGS:
-                let request_network_settings = new RequestNetworkSettingsPacket();
+                var request_network_settings = new RequestNetworkSettingsPacket();
                 request_network_settings.read(stream);
                 // check the protocol version
                 this.send_network_settings();

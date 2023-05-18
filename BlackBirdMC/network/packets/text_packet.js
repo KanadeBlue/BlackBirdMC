@@ -1,4 +1,3 @@
-const binary_stream = require("bbmc-binarystream");
 const text_types = require("../constants/text_types");
 const PacketBase = require("../packet_base");
 const PacketIdentifiers = require("../packet_identifiers");
@@ -25,6 +24,7 @@ read(stream) {
         case text_types.whisper:
         case text_types.announcement:
             this.sourceUserName = stream.readStringVarInt();
+            break;
         case text_types.raw:
         case text_types.tip:
         case text_types.system:
@@ -57,6 +57,7 @@ write(stream) {
         case text_types.whisper:
         case text_types.announcement:
             stream.readStringVarInt(this.sourceUserName);
+            break;
         case text_types.raw:
         case text_types.tip:
         case text_types.system:

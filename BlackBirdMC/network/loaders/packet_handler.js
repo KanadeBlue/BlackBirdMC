@@ -1,4 +1,3 @@
-const Player = require("../../player");
 const PacketIdentifiers = require("../packet_identifiers");
 const GamePacket = require("../packets/game_packet");
 
@@ -10,7 +9,7 @@ class PacketHandler {
             let packet_id = stream.readUnsignedByte();
             switch (packet_id) {
                 case PacketIdentifiers.GAME: 
-                    let game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);
+                    var game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);
                     game_packet.read(stream);
                     game_packet.buffers.forEach((buffer) => {
                         console.log(buffer);

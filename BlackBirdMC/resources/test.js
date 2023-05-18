@@ -4,7 +4,7 @@ const ColorFormat = require("../utils/color_format");
 const ErrorHandler = require("../utils/error_handler");
 
 try {
-    const instance = new Server();
+    new Server();
     console.log(ColorFormat.get_color("dark green") + "All tests passed" + ColorFormat.get_color("reset"));
     process.exit(0);
 } catch (error) {

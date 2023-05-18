@@ -13,6 +13,7 @@ function configuration() {
       obj[name] = value
     }
 
+    // eslint-disable-next-line no-undef
     BBMC.config = obj
   })
 }

@@ -1,4 +1,3 @@
-const BinaryStream = require("bbmc-binarystream");
 const PacketBase = require("../packet_base");
 const PacketIdentifiers = require("../packet_identifiers");
 

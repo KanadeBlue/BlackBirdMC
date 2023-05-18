@@ -5,5 +5,5 @@ require('./utils/configuration')()
 const Server = require("./server");
 
 (() => {
-    const instance = new Server();
+    new Server();
 })();

@@ -5,7 +5,7 @@ class ErrorHandler {
         fs.mkdirSync("crashdumps");
       }
       const fileName = `${new Date().toDateString()}${new Date().getHours()}${new Date().getMinutes()}${new Date().getSeconds()}`.replace(/ /g, '_');
-      fs.writeFileSync(`./crashdumps/${fileName}.txt`, error.stack);
+      fs.writeFileSync(`./bbmc/crashdumps/${fileName}.txt`, error.stack);
     }
   }
 

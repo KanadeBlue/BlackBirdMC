@@ -54,9 +54,7 @@ class Server {
       PacketHandler.handler(stream, connection, this)
     })
     console.info(
-      ColorFormat.get_color("Green") +
-        this.language.server("loaded") +
-        ColorFormat.get_color("Reset")
+      ColorFormat.format_color(this.language.server("loaded"), "Green") 
     )
   }
 }
@@ -64,12 +62,10 @@ class Server {
 process.on("uncaughtException", (e) => {
   ErrorHandler.write_error(e)
   console.error(
-    ColorFormat.get_color("red") + e.stack + ColorFormat.get_color("reset")
+    ColorFormat.format_color(e.stack, "Red")
   )
   console.error(
-    ColorFormat.get_color("green") +
-      "Error happend and crashed the server." +
-      ColorFormat.get_color("reset")
+    ColorFormat.get_color("Error happened and crashed the server.", "green")
   )
   process.exit(0)
 })

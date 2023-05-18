@@ -46,6 +46,12 @@ class ColorFormat {
 
     return this.colors[color_lower_case]
   }
+
+  static format_color(text, color) {
+    color = color.toLowerCase()
+
+    return this.colors[color] + text + this.colors.reset
+  }
 }
 
 module.exports = ColorFormat

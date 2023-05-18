@@ -1,4 +1,4 @@
-<img width="100px" align="left" src="https://media.discordapp.net/attachments/1099287728857821224/1099314814456692747/Untitled.png"></img>
+<img width="120px" align="left" src="https://media.discordapp.net/attachments/1099287728857821224/1099314814456692747/Untitled.png"></img>
 
 # BlackBirdMC
 
@@ -23,14 +23,14 @@ BBMC under active development.
 
 ## Getting started
 
-# Clone the repository
-git clone https://github.com/BlackBirdMC/Server.git
+### Clone the repository
+`git clone https://github.com/BlackBirdMC/Server.git`
 
-# Install dependencies
-npm install
+### Install dependencies
+`npm install` || `npm i`
 
-# Run the server
-npm run start
+### Run the server
+`npm run start` || `node .`
 
 ## Related
 

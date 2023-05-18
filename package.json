@@ -18,9 +18,9 @@
   },
   "scripts": {
     "test": "node BlackBirdMC/resources/test.js",
-    "makedocs": "node apidocs.js",
     "lint": "eslint .",
-    "dev": "nodemon ."
+    "dev": "nodemon .",
+    "start": "node ."
   },
   "repository": {
     "type": "git",

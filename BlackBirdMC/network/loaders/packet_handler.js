@@ -13,7 +13,6 @@ class PacketHandler {
                     var game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);
                     game_packet.read(stream);
                     game_packet.buffers.forEach((buffer) => {
-                        console.log(buffer);
                         if (buffer.length) {
                             player.handle_packet(buffer);
                         }

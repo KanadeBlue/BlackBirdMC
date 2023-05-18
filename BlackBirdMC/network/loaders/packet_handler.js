@@ -20,7 +20,7 @@ class PacketHandler {
                     });
                     break;
             }
-            console.log(`${connection.address.name}:${connection.address.port} sent a packet`);
+            console.debug(`${connection.address.name}:${connection.address.port} sent a packet`);
         }
     }
 }

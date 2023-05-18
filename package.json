@@ -13,12 +13,14 @@
   },
   "devDependencies": {
     "eslint": "^8.40.0",
+    "nodemon": "^2.0.22",
     "swagger-autogen": "^2.23.1"
   },
   "scripts": {
     "test": "node BlackBirdMC/resources/test.js",
     "makedocs": "node apidocs.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "dev": "nodemon ."
   },
   "repository": {
     "type": "git",

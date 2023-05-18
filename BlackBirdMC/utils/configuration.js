@@ -1,7 +1,7 @@
 const { readFile } = require('fs')
 
 function configuration() {
-  readFile('server.properties', 'utf-8', (err, data) => {
+  readFile('bbmc/server.properties', 'utf-8', (err, data) => {
     if (err) throw err
     const arr = data.split('=')
     const obj = {}

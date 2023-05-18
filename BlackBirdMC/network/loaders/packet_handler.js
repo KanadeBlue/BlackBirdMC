@@ -1,3 +1,4 @@
+const ColorFormat = require("../../utils/color_format");
 const PacketIdentifiers = require("../packet_identifiers");
 const GamePacket = require("../packets/game_packet");
 
@@ -12,14 +13,13 @@ class PacketHandler {
                     var game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);
                     game_packet.read(stream);
                     game_packet.buffers.forEach((buffer) => {
-                        console.log(buffer);
                         if (buffer.length) {
                             player.handle_packet(buffer);
                         }
                     });
                     break;
             }
-            console.debug(`${connection.address.name}:${connection.address.port} sent a packet`);
+            console.debug(`${connection.address.name}:${connection.address.port} sent a packet`, ColorFormat.format_color('Client', 'bold'));
         }
     }
 }

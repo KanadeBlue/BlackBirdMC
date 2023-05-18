@@ -31,7 +31,7 @@ class Server {
     )
     this.raknet_server.message = "MCPE;Testserver;0;1.19.73;0;10;"
     this.raknet_server.on("disconnect", (address) => {
-      console.info(`${address.name}:${address.port} disconnected.`)
+      console.info(`${address.name}:${address.port} disconnected.`, ColorFormat.format_color('Client', 'bold'))
       let addr = address.toString()
       if (this.players.has(addr)) {
         this.players.delete(addr)
@@ -44,15 +44,14 @@ class Server {
         this.players.set(addr, new Player(connection))
       }
       console.info(
-        `${connection.address.name}:${connection.address.port} connected!`
+        `${connection.address.name}:${connection.address.port} connected!`,
+        ColorFormat.format_color('Client', 'bold')
       )
     })
     this.raknet_server.on("packet", (stream, connection) => {
       PacketHandler.handler(stream, connection, this)
     })
-    console.info(
-      ColorFormat.format_color(this.language.server("loaded"), "Green") 
-    )
+    console.info("Listening to 0.0.0.0:19132", ColorFormat.format_color('Server', 'bold'))
   }
 }
 

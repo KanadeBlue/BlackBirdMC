@@ -1,13 +1,12 @@
 const {
   RakNetServer,
-  Frame,
-  ReliabilityTool,
   InternetAddress,
-  Connection,
 } = require("bbmc-raknet")
 const Player = require("./player")
 const Language = require("./language/language")
 const PacketHandler = require("./network/loaders/packet_handler")
+const ColorFormat = require("./utils/color_format")
+const ErrorHandler = require("./utils/error_handler")
 
 class Server {
   /**
@@ -24,16 +23,6 @@ class Server {
   language
 
   constructor() {
-    if (
-      typeof process === "undefined" ||
-      process.versions.node.split(".")[0] <= 14
-    ) {
-      console.error(
-        `Supported node version is ^15.x but received ${process.version.node}`
-      )
-      process.exit(-1)
-    }
-
     this.language = new Language("eng")
     this.players = new Map()
     this.raknet_server = new RakNetServer(
@@ -42,7 +31,7 @@ class Server {
     )
     this.raknet_server.message = "MCPE;Testserver;0;1.19.73;0;10;"
     this.raknet_server.on("disconnect", (address) => {
-      console.log(`${address.name}:${address.port} disconnected.`)
+      console.info(`${address.name}:${address.port} disconnected.`)
       let addr = address.toString()
       if (this.players.has(addr)) {
         this.players.delete(addr)
@@ -54,15 +43,28 @@ class Server {
       if (!this.players.has(addr)) {
         this.players.set(addr, new Player(connection))
       }
-      console.log(
+      console.info(
         `${connection.address.name}:${connection.address.port} connected!`
       )
     })
     this.raknet_server.on("packet", (stream, connection) => {
-      PacketHandler.handler(stream, connection)
+      PacketHandler.handler(stream, connection, this)
     })
-    console.log(this.language.server("loaded"))
+    console.info(
+      ColorFormat.format_color(this.language.server("loaded"), "Green") 
+    )
   }
 }
+
+process.on("uncaughtException", (e) => {
+  ErrorHandler.write_error(e)
+  console.error(
+    ColorFormat.format_color(e.stack, "Red")
+  )
+  console.error(
+    ColorFormat.get_color("Error happened and crashed the server.", "green")
+  )
+  process.exit(0)
+})
 
 module.exports = Server

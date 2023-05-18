@@ -1,5 +1,4 @@
-const BinaryStream = require("bbmc-binarystream");
-
+/* eslint-disable no-unused-vars */
 class PacketBase {
     /**
      * @type {Number}

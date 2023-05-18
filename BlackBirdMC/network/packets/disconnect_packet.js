@@ -1,4 +1,3 @@
-const BinaryStream = require("bbmc-binarystream");
 const PacketBase = require("../packet_base");
 const PacketIdentifiers = require("../packet_identifiers");
 
@@ -19,7 +18,7 @@ class DisconnectPacket extends PacketBase {
      */
     read(stream) {
         this.hideNotification = stream.readBool();
-        this.message = stream.readStringVarInt();
+        //this.message = stream.readStringVarInt();
     }
 
     /**
@@ -28,7 +27,7 @@ class DisconnectPacket extends PacketBase {
      */ 
     write(stream) {
         stream.writeBool(this.hideNotification);
-        stream.writeStringVarInt(this.message);
+        //stream.writeStringVarInt(this.message);
     }
 }
 

@@ -1,7 +1,7 @@
 function LoggingFormat() {
   ["info", "warn", "error", "debug", 'log'].forEach((v) => {
     const backup = console[v]
-    console[v] = (text) => {
+    console[v] = (text, group) => {
       const date = new Date().toLocaleString().replace(", ", " ").toUpperCase()
       
       // eslint-disable-next-line no-undef
@@ -14,7 +14,8 @@ function LoggingFormat() {
         debug: "DBUG",
         log: 'DBUG'
       }
-      backup(`[${date} ${a[v]}]`, text) 
+      if(group) backup(`[${date} ${a[v]}]`, `[${group}]`, text) 
+      else backup(`[${date} ${a[v]}]`, text) 
     }
   })
 }

@@ -38,6 +38,11 @@ class ColorFormat {
     gray: this.console_gray,
     grey: this.console_gray,
     green: this.console_green,
+    bold: this.console_bold,
+    italic: this.console_italic,
+    underline: this.console_underline,
+    strike: this.console_strike,
+    obfuscated: this.console_obfuscated
   }
 
   static get_color(color) {

@@ -50,9 +50,7 @@ class Server {
     this.raknet_server.on("packet", (stream, connection) => {
       PacketHandler.handler(stream, connection, this)
     })
-    console.info(
-      ColorFormat.format_color(this.language.server("loaded"), "Green") 
-    )
+    console.info("Listening to 0.0.0.0:19132", ColorFormat.format_color('Server', 'bold'))
   }
 }
 

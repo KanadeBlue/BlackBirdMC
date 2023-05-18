@@ -5,9 +5,16 @@ function LoggingFormat() {
       const date = new Date().toLocaleString().replace(", ", " ").toUpperCase()
       
       // eslint-disable-next-line no-undef
-      if(v === "debug" || v === "log" && BBMC?.config?.debug === 'false') return
+      if((v === "debug" || v === "log") && BBMC?.config?.debug === 'false') return
 
-      backup(`[${date} ${v.toUpperCase()}]`, text) 
+      const a = {
+        info: "INFO",
+        warn: "WARN",
+        error: "ERRR",
+        debug: "DBUG",
+        log: 'DBUG'
+      }
+      backup(`[${date} ${a[v]}]`, text) 
     }
   })
 }

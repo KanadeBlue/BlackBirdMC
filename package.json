@@ -13,7 +13,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "node BlackBirdMC/resources/test.js"
+    "test": "node BlackBirdMC/resources/test.js",
+    "start": "node ."
   },
   "repository": {
     "type": "git",

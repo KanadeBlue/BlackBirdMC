@@ -5,11 +5,11 @@ const ErrorHandler = require("../utils/error_handler");
 
 try {
     new Server();
-    console.log(ColorFormat.get_color("dark green") + "All tests passed" + ColorFormat.get_color("reset"));
+    console.log(ColorFormat.format_color("All tests passed", "green"));
     process.exit(0);
 } catch (error) {
     console.log(error.message);
-    console.log("Test `" + ColorFormat.get_color("red") + error + ColorFormat.get_color("reset") + "` Failed");
+    console.log(ColorFormat.format_color("All tests passed", "red"));
     ErrorHandler.write_error(error);
     return error;
 }

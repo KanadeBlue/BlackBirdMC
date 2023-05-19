@@ -1,0 +1,15 @@
+{
+  "name": "@bbmc/plugins",
+  "description": "An way to make plugins in BlackBirdMC",
+  "main": "index.js",
+  "bbmc": {
+    "name": "Donation",
+    "description": "An plugin for donation link!",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "author": "hvlxh"
+  }
+}

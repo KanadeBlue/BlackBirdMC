@@ -1,4 +1,5 @@
 const { readdir } = require("fs/promises")
+const PluginAPI = require("./PluginAPI")
 
 class PluginManager {
   /**
@@ -9,11 +10,17 @@ class PluginManager {
   async start() {
     const folders = await readdir("bbmc/plugins")
     for await (const folder of folders) {
+      const info = require(`../../bbmc/plugins/${folder}/package.json`)
+      const Plugin = require(`../../bbmc/plugins/${folder}/${info.main}`)
+
       /**
        * @type {import('../api/PluginBase')}
        */
-      const plugin = require(`../../bbmc/plugins/${folder}/index.js`)
-      this.plugins.push(new plugin())
+      const plugin = new Plugin()
+      plugin.options = info.bbmc
+      plugin.api = PluginAPI(info.bbmc.name)
+
+      this.plugins.push(plugin)
     }
   }
 

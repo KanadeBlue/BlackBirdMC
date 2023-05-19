@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BlackBirdMC/Server.git"
+    "url": "git+https://github.com/BlackBirdMC/BlackBirdMC.git"
   },
   "keywords": [
     "Minecraft"
@@ -32,7 +32,7 @@
   "author": "BlackBirdMC",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BlackBirdMC/Server/issues"
+    "url": "https://github.com/BlackBirdMC/BlackBirdMC/issues"
   },
-  "homepage": "https://github.com/BlackBirdMC/Server#readme"
+  "homepage": "https://github.com/BlackBirdMC/BlackBirdMC#readme"
 }

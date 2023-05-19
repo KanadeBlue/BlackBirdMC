@@ -11,7 +11,13 @@ class PluginManager {
     const folders = await readdir("bbmc/plugins")
     for await (const folder of folders) {
       const info = require(`../../bbmc/plugins/${folder}/package.json`)
-      const Plugin = require(`../../bbmc/plugins/${folder}/${info.main}`)
+      const main = info.main.replace('./', '');
+      const Plugin = require(`../../bbmc/plugins/${folder}/${main}`)
+
+      if (info.bbmc.api_version < "1.0.0") {
+        console.info(info.bbmc.name + " has been disabled.");
+        return console.error("Our API does not support the requested version. However, we ensure compatibility with versions 1.0.0 and above.")
+      }
 
       /**
        * @type {import('../api/PluginBase')}
@@ -20,7 +26,7 @@ class PluginManager {
       plugin.options = info.bbmc
       plugin.api = PluginAPI(info.bbmc.name)
 
-      this.plugins.push(plugin)
+      this.plugins.push(plugin);
     }
   }
 

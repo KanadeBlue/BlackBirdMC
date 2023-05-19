@@ -2,7 +2,7 @@
   "name": "blackbirdmc",
   "version": "0.1.0",
   "description": "Blackbird is a bedrock open source software, written in javascript.",
-  "main": "BlackBirdMC/index.js",
+  "main": "BlackBirdMC/start.js",
   "dependencies": {
     "bbmc-binarystream": "^1.0.0",
     "bbmc-chunkutils": "github:MFDGaming/BBMC-ChunkUtils",

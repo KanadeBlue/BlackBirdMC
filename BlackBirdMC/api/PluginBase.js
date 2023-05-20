@@ -8,12 +8,12 @@ class PluginBase {
   /**
    * @abstract
    */
-  onEnable() {}
+  onEnable() { }
 
   /**
    * @abstract
    */
-  onDisable() {}
+  onDisable() { }
 }
 
 module.exports = PluginBase

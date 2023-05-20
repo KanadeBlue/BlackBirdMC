@@ -1,13 +1,13 @@
+const PluginAPI = require("../../../../BlackBirdMC/api/PluginAPI")
 const PluginBase = require("../../../../BlackBirdMC/api/PluginBase")
 
 class DonationPlugin extends PluginBase {
-  constructor() {
-    super({
-      name: "Donation",
-      description: "An plugin for donation link!",
-      version: [1, 0, 0],
-      author: "hvlxh",
-    })
+  static info
+
+  constructor(info) {
+    super()
+
+    this.api = PluginAPI('1.0.0', info)
   }
 
   onEnable() {

@@ -1,4 +1,5 @@
-const { readdir } = require("fs/promises")
+const { readdir } = require("fs/promises");
+const ColorFormat = require("../utils/color_format");
 
 class PluginManager {
   /**
@@ -23,7 +24,17 @@ class PluginManager {
 
   doTask(event, ...args) {
     this.plugins.forEach((plu) => {
-      if (plu[event]) plu[event](...args)
+      if (plu[event]) {
+        if (event === "onEnable") {
+          console.info(`Enabling ${plu.options.name}:${plu.options.version}`, ColorFormat.format_color('Plugins', 'bold'))
+          plu[event](...args)
+        } else if (event === "onDisable") {
+          console.info(`Disabling ${plu.options.name}:${plu.options.version}`, ColorFormat.format_color('Plugins', 'bold'))
+          plu[event](...args)
+        } else {
+          plu[event](...args)
+        }
+      }
     })
   }
 }

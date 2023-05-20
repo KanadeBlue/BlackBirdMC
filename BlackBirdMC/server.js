@@ -61,6 +61,18 @@ class Server {
       this.plugins.doTask("onEnable")
     })()
     console.info(`Server Loaded in [${(Date.now() - startTime) / 1000}]`, ColorFormat.format_color("Server", "bold"));
+
+    process.on('SIGINT', () => {
+      this.plugins.doTask('onDisable')
+
+      process.exit(0)
+    })
+
+    process.on('SIGUSR2', () => {
+      this.plugins.doTask('onDisable')
+
+      process.kill(process.pid, 'SIGUSR2')
+    })
   }
 }
 

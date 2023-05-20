@@ -13,6 +13,10 @@ class DonationPlugin extends PluginBase {
   onEnable() {
     this.api.getLogger().info("ZZZ")
   }
+
+  onDisable() {
+    this.api.getLogger().info('zzz')
+  }
 }
 
 module.exports = DonationPlugin

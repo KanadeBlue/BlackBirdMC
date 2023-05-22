@@ -1,8 +1,13 @@
 globalThis.BBMC = {}
-
-require("./utils/logging_format")()
-require("./utils/configuration")()
 const Server = require("./server")
 
-const instance = new Server()
-module.exports = instance
+async function main() {
+  await require("./utils/logging_format")()
+  await require("./utils/configuration")()
+
+  return new Server()
+}
+
+main().then((v) => {
+  module.exports = v
+})

@@ -1,21 +1,14 @@
-const { readFile } = require("fs")
+const { readFile } = require("fs/promises")
+const { parse } = require('yaml')
 
-function configuration() {
-  readFile("BlackBirdMC/resources/server.properties", "utf-8", (err, data) => {
-    if (err) throw err
-    const arr = data.split("=")
-    const obj = {}
+async function configuration() {
+  const data = await readFile('bbmc/bbmc.yml', 'utf-8')
 
-    for (let i = 0; i < arr.length; i += 2) {
-      const name = arr[i]
-      const value = arr[i + 1]
-
-      obj[name] = value
-    }
-
-    // eslint-disable-next-line no-undef
-    BBMC.config = obj
-  })
+  /**
+   * @type {import('../types/bbmc.yml').default}
+   */
+  // eslint-disable-next-line no-undef
+  BBMC.config = parse(data)
 }
 
 module.exports = configuration

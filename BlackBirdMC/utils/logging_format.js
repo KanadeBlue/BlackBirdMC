@@ -3,9 +3,9 @@ function LoggingFormat() {
     const backup = console[v]
     console[v] = (text, group) => {
       const date = new Date().toLocaleString().replace(", ", " ").toUpperCase()
-      
+
       // eslint-disable-next-line no-undef
-      if((v === "debug" || v === "log") && BBMC?.config?.debug === 'false') return
+      if ((v === "debug" || v === "log") && BBMC?.config?.BBMC?.debug === 'false') return
 
       const a = {
         info: "INFO",
@@ -14,8 +14,8 @@ function LoggingFormat() {
         debug: "DBUG",
         log: 'DBUG'
       }
-      if(group) backup(`[${date} ${a[v]}]`, `[${group}]`, text) 
-      else backup(`[${date} ${a[v]}]`, text) 
+      if (group) backup(`[${date} ${a[v]}]`, `[${group}]`, text)
+      else backup(`[${date} ${a[v]}]`, text)
     }
   })
 }

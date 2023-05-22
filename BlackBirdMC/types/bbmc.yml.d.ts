@@ -1,26 +1,31 @@
 interface bbmcYml {
   Vanilla: {
     Server: {
-      ip: string
-      port: number
-      version: [num, num, num]
-      maxPlayers: num
-    }
+      ip: string;
+      port: number;
+      version: [num, num, num];
+      maxPlayers: num;
+    };
     RCON: {
-      enable: boolean
-      port: number
-      pass: string
-    }
-  }
+      enable: boolean;
+      port: number;
+      pass: string;
+    };
+  };
 
   BBMC: {
-    debug: boolean
+    debug: boolean;
+    language: string;
 
     Terminal: {
-      showDate: boolean
-      showGroup: boolean
-    }
-  }
+      showDate: boolean;
+      showGroup: boolean;
+    };
+    Command: {
+      unknown_command: string;
+      permission_message: string;
+    };
+  };
 }
 
-export default bbmcYml
+export default bbmcYml;

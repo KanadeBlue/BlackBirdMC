@@ -1,13 +1,13 @@
 
 class Command {
     name;
-    aliases = [];
-    description = "";
-    usageMessage = "";
+    aliases;
+    description;
+    usageMessage;
     permission;
     permissionMessage;
 
-    constructor(name, aliases = [], description, usageMessage = "", permission = "", permissionMessage = "") {
+    constructor(name, aliases = [], description = "", usageMessage = "", permission = "", permissionMessage = "") {
         this.name = name;
         this.aliases = aliases;
         this.description = description;
@@ -17,7 +17,11 @@ class Command {
     }
 
     // eslint-disable-next-line no-unused-vars
-    async execute(sender, writtenCommand, args) {}
+    async execute(sender, writtenCommand, args) { }
+
+    getAliases() {
+        this.aliases;
+    }
 }
 
 module.exports = Command;

@@ -5,7 +5,9 @@ const PacketHandler = require("./network/loaders/packet_handler")
 const ColorFormat = require("./utils/color_format")
 const ErrorHandler = require("./utils/error_handler")
 const PluginManager = require("./api/PluginManager")
-const PlayStatus = require("./network/constants/play_status")
+const PlayStatus = require("./network/constants/play_status");
+const CommandsList = require("./command/command_list");
+const CommandReader = require("./utils/command_reader")
 
 class Server {
   /**
@@ -19,7 +21,11 @@ class Server {
   /**
    * @type {Language}
    */
-  language = new Language("eng");
+  language = new Language("jpn");
+
+  commands = new CommandsList();
+
+  console_command_reader = new CommandReader(this);
 
   /**
    * @private
@@ -55,6 +61,11 @@ class Server {
         player.send_play_status(PlayStatus.FAILED_INVALID_TENANT)
       }
 
+      this.commands.load();
+
+      this.console_command_reader.handle();
+
+
       console.info(
         `${connection.address.name}:${connection.address.port} connected!`,
         ColorFormat.format_color("Client", "bold")
@@ -63,7 +74,8 @@ class Server {
     this.raknet_server.on("packet", (stream, connection) => {
       PacketHandler.handler(stream, connection, this)
     })
-    console.info("Listening to 0.0.0.0:19132", ColorFormat.format_color("Server", "bold"));
+    // eslint-disable-next-line no-undef
+    console.info("Listening to 0.0.0.0:" + BBMC.config.Vanilla.Server.port, ColorFormat.format_color("Server", "bold"));
 
     (async () => {
       await this.plugins.start()

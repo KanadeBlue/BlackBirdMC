@@ -9,5 +9,5 @@ BBMC:
   debug: true
 
   Terminal:
-    showDate: boolean
-    showGroup: boolean
+    showDate: true
+    showGroup: true

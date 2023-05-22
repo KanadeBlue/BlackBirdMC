@@ -14,8 +14,26 @@ function LoggingFormat() {
         debug: "DBUG",
         log: 'DBUG'
       }
-      if (group) backup(`[${date} ${a[v]}]`, `[${group}]`, text)
-      else backup(`[${date} ${a[v]}]`, text)
+
+      // eslint-disable-next-line no-undef
+      if (BBMC.config.BBMC.Terminal.showDate) {
+        const datePrefix = `[${date} ${a[v]}]`;
+        // eslint-disable-next-line no-undef
+        if (BBMC.config.BBMC.Terminal.showGroup) {
+          if (group) backup(datePrefix, `[${group}]`, text);
+          else backup(datePrefix, text);
+        } else {
+          backup(datePrefix, text);
+        }
+        // eslint-disable-next-line no-undef
+      } else if (BBMC.config.BBMC.Terminal.showGroup) {
+        const groupPrefix = `[${a[v]}]`;
+        if (group) backup(groupPrefix, `[${group}]`, text);
+        else backup(groupPrefix, text);
+      } else {
+        backup(`${a[v]} |`, text);
+      }
+
     }
   })
 }

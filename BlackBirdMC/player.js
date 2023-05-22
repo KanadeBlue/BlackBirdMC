@@ -1,4 +1,4 @@
-const {Frame, ReliabilityTool} = require("bbmc-raknet");
+const { Frame, ReliabilityTool } = require("bbmc-raknet");
 const BinaryStream = require("bbmc-binarystream");
 const PacketIdentifiers = require("./network/packet_identifiers");
 const RequestNetworkSettingsPacket = require("./network/packets/request_network_settings_packet");
@@ -6,6 +6,7 @@ const NetworkSettingsPacket = require("./network/packets/network_settings_packet
 const GamePacket = require("./network/packets/game_packet");
 const PlayStatusPacket = require("./network/packets/play_status_packet");
 const PlayStatus = require("./network/constants/play_status");
+const Versions = require('./network/constants/versions')
 
 class Player {
     /**
@@ -36,12 +37,18 @@ class Player {
     handle_packet(buffer) {
         let stream = new BinaryStream(buffer);
         let packet_id = stream.readVarInt();
-        switch(packet_id) {
+        switch (packet_id) {
             case PacketIdentifiers.REQUEST_NETWORK_SETTINGS:
                 var request_network_settings = new RequestNetworkSettingsPacket();
                 request_network_settings.read(stream);
                 // check the protocol version
                 this.send_network_settings();
+
+                if (typeof PacketIdentifiers.PROTOCOL_VERSION === "undefined") {
+                    // eslint-disable-next-line no-undef
+                    PacketIdentifiers.PROTOCOL_VERSION = Versions[BBMC.config?.Vanilla?.Server?.version.join('.')]
+                }
+
                 if (request_network_settings.client_protocol != PacketIdentifiers.PROTOCOL_VERSION) {
                     this.send_play_status(PlayStatus.FAILED_CLIENT);
                 }

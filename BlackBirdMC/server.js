@@ -5,6 +5,7 @@ const PacketHandler = require("./network/loaders/packet_handler")
 const ColorFormat = require("./utils/color_format")
 const ErrorHandler = require("./utils/error_handler")
 const PluginManager = require("./api/PluginManager")
+const PlayStatus = require("./network/constants/play_status")
 
 class Server {
   /**
@@ -29,7 +30,8 @@ class Server {
     let startTime = Date.now();
     this.players = new Map();
     this.raknet_server = new RakNetServer(
-      new InternetAddress("0.0.0.0", 19132, 4),
+      // eslint-disable-next-line no-undef
+      new InternetAddress(BBMC.config.Vanilla.Server.host, BBMC.config.Vanilla.Server.port, 4),
       11
     )
     this.raknet_server.message = "MCPE;Testserver;0;1.19.73;0;10;"
@@ -43,9 +45,16 @@ class Server {
 
     this.raknet_server.on("connect", (connection) => {
       let addr = connection.address.toString()
+      let player;
       if (!this.players.has(addr)) {
-        this.players.set(addr, new Player(connection))
+        player = this.players.set(addr, new Player(connection)).get(addr)
       }
+
+      // eslint-disable-next-line no-undef
+      if (this.players.size > BBMC.config.Vanilla.Server.max_players) {
+        player.send_play_status(PlayStatus.FAILED_INVALID_TENANT)
+      }
+
       console.info(
         `${connection.address.name}:${connection.address.port} connected!`,
         ColorFormat.format_color("Client", "bold")

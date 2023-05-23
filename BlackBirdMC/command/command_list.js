@@ -20,6 +20,7 @@ class CommandsList {
     add(command) {
         if (command instanceof Command && !(command.name in this.commands)) {
             this.commands[command.name] = command;
+            this.commands[command.name].execute = command.execute.bind(command);
             if (command.getAliases !== []) {
                 command.aliases.forEach((aliasName) => {
                     this.alias[aliasName] = command;
@@ -45,7 +46,7 @@ class CommandsList {
         const command = this.get(cmd);
         if (command) {
             if (sender instanceof CommandSender) {
-                command.run(sender, cmd, args);
+                command.execute(sender, cmd, args);
             }
         } else {
             if (sender instanceof ConsoleCommandSender) {

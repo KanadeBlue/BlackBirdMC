@@ -8,11 +8,12 @@ class CommandReader {
     }
 
     handle() {
-        console.log(" test")
         const rl = readline.createInterface({ input: process.stdin });
         rl.on("line", async (input) => {
             this.server.commands.dispatch(this.consoleCommandSender, input);
         });
+
+        return this
     }
 }
 

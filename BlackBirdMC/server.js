@@ -25,7 +25,7 @@ class Server {
 
   commands = new CommandsList();
 
-  console_command_reader = new CommandReader(this);
+  console_command_reader = new CommandReader(this).handle();
 
   /**
    * @private

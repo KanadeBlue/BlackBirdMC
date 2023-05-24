@@ -12,6 +12,8 @@ BBMC:
   Terminal:
     showDate: true
     showGroup: true
+    prompt: false
+
   Command:
     unknown_command: "I'm sorry, but that command is not recognized. Please try again with a valid command."
     permission_message: "Sorry, you don't have the necessary permissions to perform this action. Please contact your administrator for assistance or request the appropriate permissions."

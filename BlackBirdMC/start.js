@@ -1,3 +1,6 @@
+/**
+ * @type {import('./types/bbmc.yml').default}
+ */
 globalThis.BBMC = {}
 const Server = require("./server")
 

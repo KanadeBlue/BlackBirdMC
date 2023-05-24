@@ -1,4 +1,4 @@
-interface bbmcYml {
+type Configuration = {
   Vanilla: {
     Server: {
       ip: string;
@@ -21,11 +21,16 @@ interface bbmcYml {
       showDate: boolean;
       showGroup: boolean;
     };
+    
     Command: {
       unknown_command: string;
       permission_message: string;
     };
   };
+}
+
+interface bbmcYml {
+  config: Configuration
 }
 
 export default bbmcYml;

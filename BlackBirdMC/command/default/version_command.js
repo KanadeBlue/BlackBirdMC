@@ -16,7 +16,7 @@ class VersionCommand extends Command {
 
             if (matchingPlugins.length > 0) {
                 matchingPlugins.forEach(plugin => {
-                    sender.message("----- " + plugin.options.name + " -----");
+                    sender.message("----- Plugin Info - " + plugin.options.name + " -----");
                     sender.message("Name: " + plugin.options.name);
                     sender.message("Version: " + plugin.options.version);
                     sender.message("Description: " + plugin.options.description);
@@ -26,7 +26,7 @@ class VersionCommand extends Command {
                 sender.message("Plugin " + args[0] + " not found!");
             }
         } else {
-            sender.message(`This server is running: ${ServerInfo.engine} and Minecraft version(s): [${BBMC.config.Vanilla.Server.version}].`);
+            sender.message(`This server is running: ${ServerInfo.engine} and Minecraft version(s): [${BBMC.config.Vanilla.Server.version.join('.')}].`);
         }
     }
 }

@@ -18,7 +18,6 @@ class HelpCMD extends Command {
             const allCommands = sender.server.commands.getAllCommands();
             const commands = Object.values(allCommands)
                 .flatMap((cmd) => {
-                    console.log(cmd)
                     const aliases = [cmd.name, ...cmd.aliases];
                     return aliases.map((alias) => ({
                         name: alias,

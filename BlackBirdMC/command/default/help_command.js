@@ -3,7 +3,13 @@ const Command = require("../command");
 
 class HelpCMD extends Command {
     constructor() {
-        super("help", ["?"], "Shows the help menu or for a certain command.", "", "", BBMC.config.BBMC.Command.permission_message);
+        super({
+            name: "help",
+            aliases: ["?"],
+            description: "Shows the help menu or for a certain command.", usageMessage: "",
+            permission: "",
+            permissionMessage: BBMC.config.BBMC.Command.permission_message
+        });
     }
 
     execute(sender, writtenCommand, args) {

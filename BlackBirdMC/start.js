@@ -1,16 +1,16 @@
-/**
- * @type {import('./types/bbmc.yml').default}
- */
-globalThis.BBMC = {}
-const Server = require("./server")
+global.BBMC = {};
+
+const Server = require("./server");
 
 async function main() {
-  await require("./utils/logging_format")()
-  await require("./utils/configuration")()
+  await Promise.all([
+    require("./utils/logging_format")(),
+    require("./utils/configuration")()
+  ]);
 
-  return new Server()
+  return new Server();
 }
 
 main().then((v) => {
-  module.exports = v
-})
+  module.exports = v;
+});

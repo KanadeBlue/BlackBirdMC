@@ -9,11 +9,11 @@ class DonationPlugin extends PluginBase {
   }
 
   onEnable() {
-    this.api.getLogger().info("ZZZ")
+    this.api.getLogger().info("Help the creators of BluebirdMC @link")
   }
 
   onDisable() {
-    this.api.getLogger().info('zzz')
+    this.api.getLogger().info("Help the creators of BluebirdMC @link")
   }
 }
 

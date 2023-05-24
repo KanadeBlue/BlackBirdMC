@@ -1,12 +1,4 @@
-
 class Command {
-    name;
-    aliases;
-    description;
-    usageMessage;
-    permission;
-    permissionMessage;
-
     /**
      * 
      * @param {string | object} name 
@@ -18,9 +10,7 @@ class Command {
      */
     constructor(name, aliases = [], description = "", usageMessage = "", permission = "", permissionMessage = "") {
         if (typeof name === "object") {
-            for (const [key, value] of Object.entries(name)) {
-                this[key] = value;
-            }
+            Object.assign(this, name);
         } else {
             this.name = name;
             this.aliases = aliases;
@@ -33,10 +23,6 @@ class Command {
 
     // eslint-disable-next-line no-unused-vars
     async execute(sender, writtenCommand, args) { }
-
-    getAliases() {
-        this.aliases;
-    }
 }
 
 module.exports = Command;

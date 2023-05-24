@@ -7,7 +7,7 @@ Vanilla:
 
 BBMC:
   debug: true
-  language: "eng"
+  language: "jpn"
 
   Terminal:
     showDate: true

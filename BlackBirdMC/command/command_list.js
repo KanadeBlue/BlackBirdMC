@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 const fs = require("fs");
 const Command = require("./command");
@@ -51,9 +52,13 @@ class CommandsList {
         } else {
             if (sender instanceof ConsoleCommandSender) {
                 if (cmd.trim() === "") return;
-                console.info("Command not found!")
+                sender.message(BBMC.config.BBMC.Command.unknown_command);
             }
         }
+    }
+
+    getAllCommands() {
+        return this.commands;
     }
 
 }

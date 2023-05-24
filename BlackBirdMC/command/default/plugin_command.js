@@ -3,7 +3,7 @@ const Command = require("../command");
 
 class PluginCMD extends Command {
     constructor() {
-        super("plugins", ["plugin", "pl"], "The plugins list", "", "", BBMC.config.BBMC.Command.permission_message);
+        super("plugins", ["plugin", "pl", "plu", "plus"], "The plugins list", "", "", BBMC.config.BBMC.Command.permission_message);
     }
 
     execute(sender) {

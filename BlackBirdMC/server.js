@@ -100,7 +100,7 @@ class Server {
 process.on("uncaughtException", (e) => {
   ErrorHandler.write_error(e)
   console.error(ColorFormat.format_color(e.stack, "Red"));
-  console.error(ColorFormat.get_color("Error happened and crashed the server.", "Green"));
+  console.error(ColorFormat.format_color("Error happened and crashed the server.", "Green"));
   process.exit(0);
 })
 

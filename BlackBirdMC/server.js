@@ -21,7 +21,8 @@ class Server {
   /**
    * @type {Language}
    */
-  language = new Language("jpn");
+  // eslint-disable-next-line no-undef
+  language = new Language(BBMC.config.BBMC.language);
 
   commands = new CommandsList();
 

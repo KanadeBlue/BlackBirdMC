@@ -9,6 +9,8 @@ const PluginManager = require("./api/plugins/PluginManager");
 const PlayStatus = require("./network/constants/play_status");
 const CommandsList = require("./command/command_list");
 const CommandReader = require("./utils/command_reader");
+const ServerInfo = require("./server_info");
+const Query = require("./api/Query");
 
 class Server {
   raknet_server;
@@ -17,6 +19,8 @@ class Server {
   plugins;
   commands
   console_command_reader;
+  query;
+  query_info;
 
   constructor() {
     let startTime = Date.now();
@@ -25,6 +29,19 @@ class Server {
     this.commands = new CommandsList();
     this.console_command_reader = new CommandReader(this).handle();
     this.plugins = new PluginManager();
+    if (BBMC.config.BBMC.Protocol.Query.enable) {
+      this.query_info = {
+        host: BBMC.config.Vanilla.Server.ip,
+        port: BBMC.config.Vanilla.Server.port,
+        max_players: BBMC.config.Vanilla.Server.max_players,
+        players: this.players,
+        motd: BBMC.config.Vanilla.Server.motd,
+        version: BBMC.config.Vanilla.Server.version.join('.'),
+        plugins: [],
+        engine: `${ServerInfo.engine} ${ServerInfo.version}`,
+      }
+      this.query = new Query(this.query_info)
+    }
 
     this.raknet_server = new RakNetServer(
       new InternetAddress(BBMC.config.Vanilla.Server.host, BBMC.config.Vanilla.Server.port, 4),
@@ -51,8 +68,6 @@ class Server {
         player.send_play_status(PlayStatus.FAILED_INVALID_TENANT);
       }
 
-      this.commands.load();
-      this.console_command_reader.handle();
 
       console.info(
         `${connection.address.name}:${connection.address.port} connected!`,
@@ -69,10 +84,13 @@ class Server {
     (async () => {
       await this.plugins.start();
       this.plugins.doTask("onEnable");
+
+      this.query_info.plugins = this.plugins.plugins.map((v) => v.options.name)
     })();
 
     process.on('SIGINT', () => {
       this.plugins.doTask('onDisable')
+      process.exit(0)
     });
 
     process.on("SIGUSR2", () => {

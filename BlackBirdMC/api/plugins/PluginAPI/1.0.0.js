@@ -1,4 +1,4 @@
-const instance = require("../../start")
+const instance = require("../../../start")
 
 /**
  * 

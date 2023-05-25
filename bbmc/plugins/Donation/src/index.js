@@ -1,5 +1,5 @@
-const PluginAPI = require("../../../../BlackBirdMC/api/PluginAPI")
-const PluginBase = require("../../../../BlackBirdMC/api/PluginBase")
+const PluginAPI = require("../../../../BlackBirdMC/api/plugins/PluginAPI")
+const PluginBase = require("../../../../BlackBirdMC/api/plugins/PluginBase")
 
 class DonationPlugin extends PluginBase {
   constructor(info) {

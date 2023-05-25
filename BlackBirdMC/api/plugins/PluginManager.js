@@ -1,5 +1,5 @@
 const { readdir } = require("fs/promises");
-const ColorFormat = require("../utils/color_format");
+const ColorFormat = require("../../utils/color_format");
 
 class PluginManager {
   /**
@@ -10,9 +10,9 @@ class PluginManager {
   async start() {
     const folders = await readdir("bbmc/plugins")
     for await (const folder of folders) {
-      const info = require(`../../bbmc/plugins/${folder}/package.json`)
+      const info = require(`../../../bbmc/plugins/${folder}/package.json`)
       const main = info.main.replace('./', '');
-      const Plugin = require(`../../bbmc/plugins/${folder}/${main}`)
+      const Plugin = require(`../../../bbmc/plugins/${folder}/${main}`)
 
       const plugin = new Plugin(info.bbmc)
       plugin.options = info.bbmc

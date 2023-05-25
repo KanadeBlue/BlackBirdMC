@@ -5,7 +5,7 @@ const Language = require("./language/language");
 const PacketHandler = require("./network/loaders/packet_handler");
 const ColorFormat = require("./utils/color_format");
 const ErrorHandler = require("./utils/error_handler");
-const PluginManager = require("./api/PluginManager");
+const PluginManager = require("./api/plugins/PluginManager");
 const PlayStatus = require("./network/constants/play_status");
 const CommandsList = require("./command/command_list");
 const CommandReader = require("./utils/command_reader");
@@ -14,18 +14,18 @@ class Server {
   raknet_server;
   players;
   language;
-  commands;
-  console_command_reader;
   plugins;
+  commands
+  console_command_reader;
 
   constructor() {
     let startTime = Date.now();
+    this.players = new Map()
     this.language = new Language(BBMC.config.BBMC.language);
     this.commands = new CommandsList();
     this.console_command_reader = new CommandReader(this).handle();
     this.plugins = new PluginManager();
 
-    this.players = new Map();
     this.raknet_server = new RakNetServer(
       new InternetAddress(BBMC.config.Vanilla.Server.host, BBMC.config.Vanilla.Server.port, 4),
       11
@@ -71,9 +71,8 @@ class Server {
       this.plugins.doTask("onEnable");
     })();
 
-    process.on("SIGINT", () => {
-      this.plugins.doTask("onDisable");
-      process.exit(0);
+    process.on('SIGINT', () => {
+      this.plugins.doTask('onDisable')
     });
 
     process.on("SIGUSR2", () => {

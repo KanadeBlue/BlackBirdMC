@@ -1,12 +1,21 @@
 const PacketBase = require("../packet_base");
 const PacketIdentifiers = require("../packet_identifiers");
+const StringCodec = require("../codecs/string_codec");
+const BinaryStream = require("bbmc-binarystream");
 
 class LoginPacket extends PacketBase {
     /**
      * @type {Number}
      */
-    protocolVersion;
-    loginTokens;
+    protocol_version;
+    /**
+     * @type {String}
+     */
+    identity;
+    /**
+     * @type {String}
+     */
+    client;
 
     constructor() {
         super(PacketIdentifiers.LOGIN);
@@ -17,9 +26,10 @@ class LoginPacket extends PacketBase {
      * @param {BinaryStream} stream 
      */
     read(stream) {
-        this.protocolVersion = stream.readIntBE();
-        //this.loginTokens = stream.readLoginTokens();
-        //console.log(this.loginTokens);
+        this.protocol_version = stream.readIntBE();
+        let inner_stream = new BinaryStream(stream.read(stream.readVarInt()));
+        this.identity = StringCodec.read_string_lil(inner_stream);
+        this.client = StringCodec.read_string_lil(inner_stream);
     }
 
     /**
@@ -28,8 +38,11 @@ class LoginPacket extends PacketBase {
      */ 
     write(stream) {
         stream.writeIntBE(this.protocolVersion);
-        //stream.writeLoginTokens(this.loginTokens);
-        //stream.writeByteArrayVarInt(stream.buffer);
+        let inner_stream = new BinaryStream();
+        StringCodec.write_string_lil(inner_stream, this.identity);
+        StringCodec.write_string_lil(inner_stream, this.client);
+        stream.writeVarInt(inner_stream.buffer.length);
+        stream.write(inner_stream.buffer);
     }
 }
 

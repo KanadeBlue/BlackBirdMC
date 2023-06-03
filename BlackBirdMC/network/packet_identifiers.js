@@ -11,6 +11,7 @@ class PacketIdentifiers {
     static DISCONNECT = 0x05;
     static TEXT = 0x09;
     static RESOURCE_PACKS_INFO = 0x06;
+    static RESOURCE_PACK_CLIENT_RESPONSE = 0x08;
 }
 
 module.exports = PacketIdentifiers;

@@ -37,14 +37,14 @@ class ResourcePacksInfoPacket extends PacketBase {
         this.must_accept = stream.readBool();
         this.has_scripts = stream.readBool();
         this.force_server_packs = stream.readBool();
-        let length = this.readShortLE();
+        let length = stream.readShortLE();
         this.behavior_packs = new Array(length);
         for (let i = 0; i < length; ++i) {
             let pack = new BehaviorPackInfo();
             pack.read(stream);
             this.behavior_packs[i] = pack;
         }
-        length = this.readShortLE();
+        length = stream.readShortLE();
         this.texture_packs = new Array(length);
         for (let i = 0; i < length; ++i) {
             let pack = new TexturePackInfo();

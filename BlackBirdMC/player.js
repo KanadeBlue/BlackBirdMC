@@ -9,6 +9,8 @@ const GamePacket = require("./network/packets/game_packet");
 const PlayStatusPacket = require("./network/packets/play_status_packet");
 const PlayStatus = require("./network/constants/play_status");
 const ResourcePacksInfoPacket = require("./network/packets/resource_packs_info_packet");
+const ResourcePackClientResponsePacket = require("./network/packets/resource_pack_client_response_packet");
+const ResourcePackResponseStatus = require("./network/constants/resource_pack_client_response_status");
 
 class Player {
     connection;
@@ -40,6 +42,16 @@ class Player {
                 this.send_play_status(PlayStatus.LOGIN_SUCCESS);
                 this.send_resource_packs_info();
                 break;
+            case PacketIdentifiers.RESOURCE_PACK_CLIENT_RESPONSE:
+                let resource_pack_client_response = new ResourcePackClientResponsePacket();
+                resource_pack_client_response.read(stream);
+                switch (resource_pack_client_response.response_status) {
+                    case ResourcePackResponseStatus.NONE:
+                    case ResourcePackResponseStatus.HAVE_ALL_PACKS:
+                        break;
+                    case ResourcePackResponseStatus.COMPLETED:
+                        break;
+                }
         }
     }
 

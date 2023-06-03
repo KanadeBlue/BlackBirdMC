@@ -78,9 +78,9 @@ class Player {
 
     send_packet(buffer) {
         let game_packet = new GamePacket(this.enable_compression, this.compression_algorithm);
+        game_packet.buffers = [buffer];
         let stream = new BinaryStream();
         game_packet.write(stream);
-        stream.buffer = buffer
         let frame = new Frame();
         frame.isFragmented = false;
         frame.reliability = ReliabilityTool.RELIABLE_ORDERED;

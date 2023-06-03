@@ -8,6 +8,7 @@ const NetworkSettingsPacket = require("./network/packets/network_settings_packet
 const GamePacket = require("./network/packets/game_packet");
 const PlayStatusPacket = require("./network/packets/play_status_packet");
 const PlayStatus = require("./network/constants/play_status");
+const ResourcePacksInfoPacket = require("./network/packets/resource_packs_info_packet");
 
 class Player {
     connection;
@@ -37,6 +38,7 @@ class Player {
                 break;
             case PacketIdentifiers.LOGIN:
                 this.send_play_status(PlayStatus.LOGIN_SUCCESS);
+                this.send_resource_packs_info();
                 break;
         }
     }
@@ -60,6 +62,18 @@ class Player {
         network_settings.write(stream);
         this.send_packet(stream.buffer);
         this.enable_compression = true;
+    }
+
+    send_resource_packs_info() {
+        let resource_packs_info = new ResourcePacksInfoPacket();
+        resource_packs_info.must_accept = false;
+        resource_packs_info.has_scripts = false;
+        resource_packs_info.force_server_packs = false;
+        resource_packs_info.behavior_packs = [];
+        resource_packs_info.texture_packs = [];
+        let stream = new BinaryStream();
+        resource_packs_info.write(stream);
+        this.send_packet(stream.buffer);
     }
 
     send_packet(buffer) {

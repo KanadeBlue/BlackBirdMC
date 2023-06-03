@@ -21,6 +21,7 @@ class Server {
   console_command_reader;
   query;
   query_info;
+  whitelist;
 
   constructor() {
     let startTime = Date.now();
@@ -29,6 +30,8 @@ class Server {
     this.commands = new CommandsList();
     this.console_command_reader = new CommandReader(this).handle();
     this.plugins = new PluginManager();
+    this.whitelist = require('../bbmc/whitelist.json')
+
     if (BBMC.config.BBMC.Protocol.Query.enable) {
       this.query_info = {
         host: BBMC.config.Vanilla.Server.ip,
@@ -59,15 +62,20 @@ class Server {
 
     this.raknet_server.on("connect", (connection) => {
       let addr = connection.address.toString();
+      /**
+       * @type {Player}
+       */
       let player;
+
       if (!this.players.has(addr)) {
         player = this.players.set(addr, new Player(connection)).get(addr);
       }
 
       if (this.players.size > BBMC.config.Vanilla.Server.max_players) {
-        player.send_play_status(PlayStatus.FAILED_INVALID_TENANT);
+        player.send_play_status(PlayStatus.FAILED_SERVER_FULL);
       }
 
+      // TODO: Disconnect when player name is not included in whitelist.json
 
       console.info(
         `${connection.address.name}:${connection.address.port} connected!`,

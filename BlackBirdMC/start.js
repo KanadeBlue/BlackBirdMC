@@ -1,4 +1,8 @@
+/**
+ * @type {import('./types/bbmc.yml').default}
+ */
 global.BBMC = {};
+
 
 const Server = require("./server");
 

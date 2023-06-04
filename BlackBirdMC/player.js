@@ -11,6 +11,7 @@ const PlayStatus = require("./network/constants/play_status");
 const ResourcePacksInfoPacket = require("./network/packets/resource_packs_info_packet");
 const ResourcePackClientResponsePacket = require("./network/packets/resource_pack_client_response_packet");
 const ResourcePackResponseStatus = require("./network/constants/resource_pack_client_response_status");
+const ResourcePackStackPacket = require("./network/packets/resource_pack_stack_packet");
 
 class Player {
     connection;
@@ -48,8 +49,10 @@ class Player {
                 switch (resource_pack_client_response.response_status) {
                     case ResourcePackResponseStatus.NONE:
                     case ResourcePackResponseStatus.HAVE_ALL_PACKS:
+                        this.send_resource_pack_stack();
                         break;
                     case ResourcePackResponseStatus.COMPLETED:
+                        console.info("Completed");
                         break;
                 }
         }
@@ -85,6 +88,19 @@ class Player {
         resource_packs_info.texture_packs = [];
         let stream = new BinaryStream();
         resource_packs_info.write(stream);
+        this.send_packet(stream.buffer);
+    }
+
+    send_resource_pack_stack() {
+        let resource_pack_stack = new ResourcePackStackPacket();
+        resource_pack_stack.must_accept = false;
+        resource_pack_stack.behavior_packs = [];
+        resource_pack_stack.texture_packs = [];
+        resource_pack_stack.game_version = "*";
+        resource_pack_stack.experiments = [];
+        resource_pack_stack.experiments_previously_used = false;
+        let stream = new BinaryStream();
+        resource_pack_stack.write(stream);
         this.send_packet(stream.buffer);
     }
 

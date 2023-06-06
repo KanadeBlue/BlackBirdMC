@@ -1,5 +1,6 @@
 const PluginAPI = require("../../../../BlackBirdMC/api/plugins/PluginAPI")
 const PluginBase = require("../../../../BlackBirdMC/api/plugins/PluginBase")
+const PluginCommand = require('../../../../BlackBirdMC/api/plugins/PluginCommand')
 
 class DonationPlugin extends PluginBase {
   constructor(info) {
@@ -10,6 +11,19 @@ class DonationPlugin extends PluginBase {
 
   onEnable() {
     this.api.getLogger().info("Help the creators of BluebirdMC @link")
+
+    const cmd = new PluginCommand()
+    cmd.setName("donation")
+    cmd.setAliases(["donate"])
+    cmd.setDescription("Donation link.")
+    cmd.setPermission("")
+    cmd.setPermissionMessage("")
+    cmd.setUsageMessage("")
+    cmd.setRun((sender) => {
+      sender.message('hello')
+    })
+
+    cmd.register()
   }
 
   onDisable() {

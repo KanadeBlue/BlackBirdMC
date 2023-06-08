@@ -17,7 +17,7 @@ class Experiment {
 
     write(stream) {
         StringCodec.write_string_vil(stream, this.name);
-        stream.writeBool(this.enabled)
+        stream.writeBool(this.enabled);
     }
 }
 

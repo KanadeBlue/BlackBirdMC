@@ -8,16 +8,16 @@ class Command {
      * @param {string} permission 
      * @param {string} permissionMessage 
      */
-    constructor(name, aliases = [], description = "", usageMessage = "", permission = "", permissionMessage = "") {
+    constructor(name, aliases = [], description = "", usage_message = "", permission = "", permission_message = "") {
         if (typeof name === "object") {
             Object.assign(this, name);
         } else {
             this.name = name;
             this.aliases = aliases;
             this.description = description;
-            this.usageMessage = usageMessage;
+            this.usage_message = usage_message;
             this.permission = permission;
-            this.permissionMessage = permissionMessage;
+            this.permission_message = permission_message;
         }
     }
 

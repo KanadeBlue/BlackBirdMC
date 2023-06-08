@@ -91,7 +91,7 @@ class TextPacket extends PacketBase {
             case TextTypes.JSON_WHISPER:
             case TextTypes.JSON:
             case TextTypes.JSON_ANNOUNCEMENT:
-                StringCodec.write_string_vil(stream, this.source_user_name);
+                StringCodec.write_string_vil(stream, this.message);
                 break;
             case TextTypes.TRANSLATION:
             case TextTypes.POPUP:

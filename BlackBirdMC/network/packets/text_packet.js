@@ -9,6 +9,10 @@ class TextPacket extends PacketBase {
      */
     type_id;
     /**
+     * @type {Boolean}
+     */
+    needs_translation;
+    /**
      * @type {String}
      */
     source_user_name;
@@ -38,11 +42,13 @@ class TextPacket extends PacketBase {
     **/
     read(stream) {
         this.type_id = stream.readUnsignedByte();
+        this.needs_translation = stream.readBool();
         switch (this.type_id) {
             case TextTypes.CHAT:
             case TextTypes.WHISPER:
             case TextTypes.ANNOUNCEMENT:
                 this.source_user_name = StringCodec.read_string_vil(stream);
+                this.message = StringCodec.read_string_vil(stream);
                 break;
             case TextTypes.RAW:
             case TextTypes.TIP:
@@ -71,11 +77,13 @@ class TextPacket extends PacketBase {
      */
     write(stream) {
         stream.writeUnsignedByte(this.type_id);
+        stream.writeBool(this.needs_translation);
         switch (this.type_id) {
             case TextTypes.CHAT:
             case TextTypes.WHISPER:
             case TextTypes.ANNOUNCEMENT:
                 StringCodec.write_string_vil(stream, this.source_user_name);
+                StringCodec.write_string_vil(stream, this.message);
                 break;
             case TextTypes.RAW:
             case TextTypes.TIP:
@@ -83,7 +91,7 @@ class TextPacket extends PacketBase {
             case TextTypes.JSON_WHISPER:
             case TextTypes.JSON:
             case TextTypes.JSON_ANNOUNCEMENT:
-                stream.writeStringVarInt(this.message);
+                StringCodec.write_string_vil(stream, this.source_user_name);
                 break;
             case TextTypes.TRANSLATION:
             case TextTypes.POPUP:

@@ -3,7 +3,7 @@ const PacketBase = require("../packet_base");
 const PacketIdentifiers = require("../packet_identifiers");
 const StringCodec = require("../codecs/string_codec");
 
-class textPacket extends PacketBase {
+class TextPacket extends PacketBase {
     /**
      * @type {Number}
      */
@@ -99,4 +99,4 @@ class textPacket extends PacketBase {
 
 
 
-module.exports = textPacket;
+module.exports = TextPacket;

@@ -1,11 +1,15 @@
 const PacketBase = require("../packet_base");
 const PacketIdentifiers = require("../packet_identifiers");
+const StringCodec = require("../codecs/string_codec");
 
 class DisconnectPacket extends PacketBase {
     /**
-     * @type {Number}
+     * @type {Boolean}
      */
-    hideNotification;
+    hide_notification;
+    /**
+     * @type {String}
+     */
     message;
 
     constructor() {
@@ -17,8 +21,8 @@ class DisconnectPacket extends PacketBase {
      * @param {BinaryStream} stream 
      */
     read(stream) {
-        this.hideNotification = stream.readBool();
-        //this.message = stream.readStringVarInt();
+        this.hide_notification = stream.readBool();
+        this.message = StringCodec.read_string_vil(stream);
     }
 
     /**
@@ -26,8 +30,8 @@ class DisconnectPacket extends PacketBase {
      * @param {BinaryStream} stream
      */ 
     write(stream) {
-        stream.writeBool(this.hideNotification);
-        //stream.writeStringVarInt(this.message);
+        stream.writeBool(this.hide_notification);
+        StringCodec.write_string_vil(stream, this.message);
     }
 }
 

@@ -1,16 +1,16 @@
 class TextTypes {
-    static raw = 0;
-    static chat = 1;
-    static translation = 2;
-    static popup = 3;
-    static jukebox_popup = 4;
-    static tip = 5;
-    static system = 6;
-    static whisper = 7;
-    static announcement = 8;
-    static json_whisper = 9;
-    static json = 10;
-    static json_announcement = 11;
+    static RAW = 0;
+    static CHAT = 1;
+    static TRANSLATION = 2;
+    static POPUP = 3;
+    static JUKEBOX_POPUP = 4;
+    static TIP = 5;
+    static SYSTEM = 6;
+    static WHISPER = 7;
+    static ANNOUNCEMENT = 8;
+    static JSON_WHISPER = 9;
+    static JSON = 10;
+    static JSON_ANNOUNCEMENT = 11;
 }
 
 module.exports = TextTypes;

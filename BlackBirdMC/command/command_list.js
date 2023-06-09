@@ -20,7 +20,6 @@ class CommandsList {
 
     add(command) {
         if (!(command.name in this.commands)) {
-            console.log(command.name)
             this.commands[command.name] = command;
             this.commands[command.name].execute = command.execute.bind(command);
             if (command.getAliases !== []) {

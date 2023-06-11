@@ -4,6 +4,7 @@ const fs = require("fs");
 const Command = require("./command");
 const ConsoleCommandSender = require("../utils/console_command_sender");
 const CommandSender = require("./command_sender");
+const Languages = require("../language/language");
 
 class CommandsList {
 

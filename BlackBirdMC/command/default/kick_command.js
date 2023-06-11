@@ -9,7 +9,7 @@ class VersionCommand extends Command {
 
   async execute(sender, writtenCommand, args) {
     if (sender.name === "Console" && !args[0]) {
-      sender.message("You must input a player name.");
+      //sender.message(sender.server.language.getContent("player", "loaded"));
     } else if (args[0]) {
       // finish console kick later.
     } else if (sender.name !== "Console") {

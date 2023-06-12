@@ -1,5 +1,5 @@
 const StringCodec = require("../codecs/string_codec");
-const {Compound, NBTNetworkBinaryStream} = require("bbmc-nbt");
+const {NBTNetworkBinaryStream} = require("bbmc-nbt");
 
 class BlockProperty {
     /**

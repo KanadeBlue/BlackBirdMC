@@ -1,5 +1,3 @@
-const Versions = require("./constants/versions");
-
 class PacketIdentifiers {
     // eslint-disable-next-line no-undef
     static PROTOCOL_VERSION = 582;

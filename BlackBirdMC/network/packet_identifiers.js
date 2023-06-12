@@ -13,6 +13,7 @@ class PacketIdentifiers {
     static RESOURCE_PACKS_INFO = 0x06;
     static RESOURCE_PACK_CLIENT_RESPONSE = 0x08;
     static RESOURCE_PACK_STACK = 0x07;
+    static START_GAME = 0x0b;
 }
 
 module.exports = PacketIdentifiers;

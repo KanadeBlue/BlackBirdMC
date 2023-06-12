@@ -39,7 +39,7 @@ class TextPacket extends PacketBase {
 
     /** 
      * @param {binary_stream} stream 
-    **/
+     */
     read(stream) {
         this.type_id = stream.readUnsignedByte();
         this.needs_translation = stream.readBool();

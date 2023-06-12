@@ -344,7 +344,7 @@ class StartGamePacket extends PacketBase {
         this.player_z = stream.readFloatLE();
         this.player_pitch = stream.readFloatLE();
         this.player_yaw = stream.readFloatLE();
-        this.seed = stream.readUnsignedLong();
+        this.seed = stream.readUnsignedLongLE();
         this.biome_type = stream.readShortLE();
         this.biome_name = StringCodec.read_string_vil(stream);
         this.dimension = stream.readSignedVarInt();
@@ -457,7 +457,7 @@ class StartGamePacket extends PacketBase {
         stream.writeFloatLE(this.player_z);
         stream.writeFloatLE(this.player_pitch);
         stream.writeFloatLE(this.player_yaw);
-        stream.writeUnsignedLong(this.seed);
+        stream.writeUnsignedLongLE(this.seed);
         stream.writeShortLE(this.biome_type);
         StringCodec.write_string_vil(stream, this.biome_name);
         stream.writeSignedVarInt(this.dimension);

@@ -7,8 +7,13 @@
     "@harmonytf/smart-buffer": "^4.2.4",
     "bbmc-binarystream": "^1.0.0",
     "bbmc-chunkutils": "github:MFDGaming/BBMC-ChunkUtils",
+<<<<<<< HEAD
     "bbmc-lang": "^0.2.9",
     "bbmc-nbt": "github:MFDGaming/BBMC-NBT",
+=======
+    "bbmc-lang": "github:BlackBirdMC/Language",
+    "bbmc-nbt": "^1.0.0",
+>>>>>>> 23b9d48cd301ada390c4e1a6b0b882c14dd9b8e7
     "bbmc-raknet": "^1.0.3",
     "readline": "^1.3.0",
     "snappy": "^7.2.2",

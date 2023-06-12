@@ -4,6 +4,7 @@ const fs = require("fs");
 const Command = require("./command");
 const ConsoleCommandSender = require("../utils/console_command_sender");
 const CommandSender = require("./command_sender");
+const Languages = require("../language/language");
 
 class CommandsList {
 
@@ -20,7 +21,6 @@ class CommandsList {
 
     add(command) {
         if (!(command.name in this.commands)) {
-            console.log(command.name)
             this.commands[command.name] = command;
             this.commands[command.name].execute = command.execute.bind(command);
             if (command.getAliases !== []) {

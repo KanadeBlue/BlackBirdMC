@@ -110,10 +110,10 @@ class Server {
       ErrorHandler.write_error(e);
       console.error(ColorFormat.format_color(e.stack, "Red"));
       console.error(ColorFormat.format_color("Error happened and crashed the server.", "Red"));
-      process.exit(0);
+      return;
     });
 
-    console.info(this.language.server("loadFinish", (Date.now() - startTime) / 1000), ColorFormat.format_color("Server", "bold"));
+    console.info(this.language.getContent("server", "loadFinish", (Date.now() - startTime) / 1000), ColorFormat.format_color("Server", "bold"));
   }
 }
 

@@ -9,7 +9,7 @@ Vanilla:
 
 BBMC:
   debug: true
-  language: "eng"
+  language: "cum"
 
   Terminal:
     showDate: true

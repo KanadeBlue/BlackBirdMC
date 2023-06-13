@@ -15,6 +15,10 @@ const ResourcePackResponseStatus = require("./network/constants/resource_pack_cl
 const ResourcePackStackPacket = require("./network/packets/resource_pack_stack_packet");
 const StartGamePacket = require("./network/packets/start_game_packet");
 const EducationSharedResourceUri = require("./network/types/education_shared_resource_uri");
+const CreativeContentPacket = require("./network/packets/creative_content_packet");
+const BiomeDefinitionListPacket = require("./network/packets/biome_definition_list_packet");
+const {item_states} = require("./resources/item_states.json");
+const ItemState = require("./network/types/item_state");
 
 class Player {
     connection;
@@ -30,6 +34,7 @@ class Player {
     handle_packet(buffer) {
         let stream = new BinaryStream(buffer);
         let packet_id = stream.readVarInt();
+        console.log(packet_id.toString(16));
         switch (packet_id) {
             case PacketIdentifiers.REQUEST_NETWORK_SETTINGS:
                 let request_network_settings = new RequestNetworkSettingsPacket();
@@ -57,6 +62,9 @@ class Player {
                     case ResourcePackResponseStatus.COMPLETED:
                         console.info("Completed");
                         this.send_start_game();
+                        this.send_creative_content();
+                        this.send_biome_definition_list();
+                        this.send_play_status(PlayStatus.PLAYER_SPAWN);
                         break;
                 }
         }
@@ -67,6 +75,19 @@ class Player {
         play_status.status = status;
         let stream = new BinaryStream();
         play_status.write(stream);
+        this.send_packet(stream.buffer);
+    }
+
+    send_biome_definition_list() {
+        let stream = new BinaryStream();
+        stream.writeVarInt(0x7a);
+        stream.writeByte(10);
+        stream.writeVarInt(0);
+        stream.writeByte(10);
+        stream.writeVarInt(5);
+        stream.write(Buffer.from("Taiga"));
+        stream.writeByte(0);
+        stream.writeByte(0);
         this.send_packet(stream.buffer);
     }
 
@@ -81,6 +102,13 @@ class Player {
         network_settings.write(stream);
         this.send_packet(stream.buffer);
         this.enable_compression = true;
+    }
+
+    send_creative_content() {
+        let creative_content = new CreativeContentPacket();
+        let stream = new BinaryStream();
+        creative_content.write(stream);
+        this.send_packet(stream.buffer);
     }
 
     send_resource_packs_info() {
@@ -100,7 +128,7 @@ class Player {
         resource_pack_stack.must_accept = false;
         resource_pack_stack.behavior_packs = [];
         resource_pack_stack.texture_packs = [];
-        resource_pack_stack.game_version = "*";
+        resource_pack_stack.game_version = "1.20.0";
         resource_pack_stack.experiments = [];
         resource_pack_stack.experiments_previously_used = false;
         let stream = new BinaryStream();
@@ -110,8 +138,8 @@ class Player {
 
     send_start_game() {
         let start_game = new StartGamePacket();
-        start_game.entity_id = 0;
-        start_game.runtime_entity_id = 0;
+        start_game.entity_id = 1n;
+        start_game.runtime_entity_id = 1n;
         start_game.player_gamemode = 1;
         start_game.player_x = 0;
         start_game.player_y = 8;
@@ -119,7 +147,7 @@ class Player {
         start_game.player_pitch = 0;
         start_game.player_yaw = 0;
         start_game.seed = 0n;
-        start_game.biome_type = 1;
+        start_game.biome_type = 0;
         start_game.biome_name = "plains";
         start_game.dimension = 0;
         start_game.generator = 1;
@@ -135,7 +163,7 @@ class Player {
         start_game.day_cycle_stop_time = 0;
         start_game.edu_offer = 0;
         start_game.edu_features_enabled = false;
-        start_game.edu_product_uuid = "";
+        start_game.edu_product_uuid = "cd353ae5-09f1-49ec-ba24-c99e9acc5e2e";
         start_game.rain_level = 0;
         start_game.lightning_level = 0;
         start_game.has_confirmed_platform_locked_content = false;
@@ -162,7 +190,7 @@ class Player {
         start_game.persona_disabled = false;
         start_game.custom_skins_disabled = false;
         start_game.emote_chat_muted = false;
-        start_game.game_version = "1.20.0"
+        start_game.game_version = "1.20.0";
         start_game.limited_world_width = 0;
         start_game.limited_world_length = 0;
         start_game.is_new_nether = true;
@@ -174,7 +202,7 @@ class Player {
         start_game.disable_player_interactions = false;
         start_game.level_id = "";
         start_game.world_name = "BlackBirdMC";
-        start_game.premium_world_template_id = "";
+        start_game.premium_world_template_id = "cd353ae5-09f1-49ec-ba24-c99e9acc5e2e";
         start_game.is_trial = false;
         start_game.movement_authority = 0;
         start_game.rewind_history_size = 0;
@@ -182,8 +210,15 @@ class Player {
         start_game.current_tick = 0n;
         start_game.enchantment_seed = 0;
         start_game.block_properties = [];
-        start_game.item_states = [];
-        start_game.multiplayer_correlation_id = "";
+        start_game.item_states = new Array(item_states.length);
+        for (let i = 0; i < item_states.length; ++i) {
+            let item_state = new ItemState();
+            item_state.name = item_states[i].name;
+            item_state.runtime_id = item_states[i].runtime_id;
+            item_state.component_based = item_states[i].component_based;
+            start_game.item_states[i] = item_state;
+        }
+        start_game.multiplayer_correlation_id = "cd353ae5-09f1-49ec-ba24-c99e9acc5e2e";
         start_game.server_authoritative_inventory = false;
         start_game.engine = "BlackBirdMC";
         start_game.property_data = new Compound();

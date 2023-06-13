@@ -14,6 +14,7 @@ class PacketIdentifiers {
     static START_GAME = 0x0b;
     static CREATIVE_CONTENT = 0x91;
     static BIOME_DEFINITION_LIST = 0x7a;
+    static COMMAND_REQUEST = 0x4d;
 }
 
 module.exports = PacketIdentifiers;

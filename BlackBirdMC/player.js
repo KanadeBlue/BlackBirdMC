@@ -19,6 +19,7 @@ const CreativeContentPacket = require("./network/packets/creative_content_packet
 const { item_states } = require("./resources/item_states.json");
 const ItemState = require("./network/types/item_state");
 const TextPacket = require("./network/packets/text_packet");
+const CommandRequestPacket = require("./network/packets/command_request");
 
 class Player {
     connection;
@@ -71,12 +72,20 @@ class Player {
             case PacketIdentifiers.TEXT:
                 this.handle_text_packet(stream)
                 break
+            case PacketIdentifiers.COMMAND_REQUEST:
+                break;
         }
     }
 
     handle_text_packet(stream) {
         let text_packet = new TextPacket();
         text_packet.read(stream);
+        this.send_packet(stream.buffer)
+    }
+
+    handle_command_request_packet(stream) {
+        let command_request_packet = new CommandRequestPacket()
+        command_request_packet.read(stream)
         this.send_packet(stream.buffer)
     }
 

@@ -1,5 +1,6 @@
 const Human = require("../entity/living/human");
 const Vector2F = require("../network/constants/vector2f");
+const Vector3F = require("../network/constants/vector3f");
 
 
 class Player extends Human {
@@ -7,13 +8,8 @@ class Player extends Human {
         super();
         this.connection = connection;
         this.server = server;
-        this.position = new Vector3F(); // TEMP UP UNLTI WORLDS ARE MADE
-        this.position.x = 0.0;
-        this.position.y = 8.0;
-        this.position.z = 0.0;
-        this.rotation = new Vector2F(); // TEMP UP UNLTI WORLDS ARE MADE
-        this.rotation.x = 0.0;
-        this.rotation.z = 0.0;
+        this.position = new Vector3F(0.0, 8.0, 0.0); // TEMP UP UNLTI WORLDS ARE MADE
+        this.rotation = new Vector2F(0.0, 0.0); // TEMP UP UNLTI WORLDS ARE MADE
         this.boundingBox.x = 0.6; // width
         this.boundingBox.z = 1.9; // height
         this.updateMetadataFlags();

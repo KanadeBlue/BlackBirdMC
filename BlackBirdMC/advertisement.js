@@ -1,12 +1,9 @@
 class Advertisement {
   constructor(players) {
-    // eslint-disable-next-line no-undef
-    this.motd = BBMC.config.Vanilla.Server.motd
-    // eslint-disable-next-line no-undef
-    this.version = BBMC.config.Vanilla.Server.version.join('.')
-    // eslint-disable-next-line no-undef
-    this.max_players = BBMC.config.Vanilla.Server.max_players
-    this.players = players.size
+    this.motd = BBMC.config.Vanilla.Server.motd;
+    this.version = BBMC.config.Vanilla.Server.version.join('.');
+    this.max_players = BBMC.config.Vanilla.Server.max_players;
+    this.players = players.size;
   }
 
   getData() {
@@ -17,16 +14,16 @@ class Advertisement {
       this.version,
       this.players,
       this.max_players
-    ].join(';') + ';'
+    ].join(';') + ';';
   }
 
   setMaxPlayers(max) {
-    this.max_players = max
+    this.max_players = max;
   }
 
   setMotd(motd) {
-    this.motd = motd
+    this.motd = motd;
   }
 }
 
-module.exports = Advertisement
+module.exports = Advertisement;

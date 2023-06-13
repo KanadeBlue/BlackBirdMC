@@ -11,6 +11,7 @@ const CommandsList = require("./command/command_list");
 const CommandReader = require("./utils/command_reader");
 const ServerInfo = require("./server_info");
 const Query = require("./api/Query");
+const Advertisement = require("./advertisement");
 
 class Server {
   raknet_server;
@@ -22,6 +23,7 @@ class Server {
   query;
   query_info;
   whitelist;
+  advertisement;
 
   constructor() {
     let startTime = Date.now();
@@ -31,6 +33,7 @@ class Server {
     this.console_command_reader = new CommandReader(this).handle();
     this.plugins = new PluginManager();
     this.whitelist = require('../bbmc/whitelist.json')
+    this.advertisement = new Advertisement(this.players)
 
     if (BBMC.config.BBMC.Protocol.Query.enable) {
       this.query_info = {
@@ -50,7 +53,7 @@ class Server {
       new InternetAddress(BBMC.config.Vanilla.Server.host, BBMC.config.Vanilla.Server.port, 4),
       11
     );
-    this.raknet_server.message = "MCPE;Testserver;0;1.19.73;0;10;";
+    this.raknet_server.message = this.advertisement.getData();
 
     this.raknet_server.on("disconnect", (address) => {
       console.info(`${address.name}:${address.port} disconnected.`, ColorFormat.format_color("Client", "bold"));

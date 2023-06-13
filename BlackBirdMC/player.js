@@ -16,9 +16,9 @@ const ResourcePackStackPacket = require("./network/packets/resource_pack_stack_p
 const StartGamePacket = require("./network/packets/start_game_packet");
 const EducationSharedResourceUri = require("./network/types/education_shared_resource_uri");
 const CreativeContentPacket = require("./network/packets/creative_content_packet");
-const BiomeDefinitionListPacket = require("./network/packets/biome_definition_list_packet");
-const {item_states} = require("./resources/item_states.json");
+const { item_states } = require("./resources/item_states.json");
 const ItemState = require("./network/types/item_state");
+const TextPacket = require("./network/packets/text_packet");
 
 class Player {
     connection;
@@ -67,7 +67,17 @@ class Player {
                         this.send_play_status(PlayStatus.PLAYER_SPAWN);
                         break;
                 }
+                break;
+            case PacketIdentifiers.TEXT:
+                this.handle_text_packet(stream)
+                break
         }
+    }
+
+    handle_text_packet(stream) {
+        let text_packet = new TextPacket();
+        text_packet.read(stream);
+        this.send_packet(stream.buffer)
     }
 
     send_play_status(status) {

@@ -35,6 +35,13 @@ class TextPacket extends PacketBase {
 
     constructor() {
         super(PacketIdentifiers.TEXT);
+        this.type_id = 0;
+        this.needs_translation = false;
+        this.source_user_name = "";
+        this.message = "";
+        this.parameters = [];
+        this.xuid = "";
+        this.platform_chat_id = "";
     }
 
     /** 
@@ -100,11 +107,9 @@ class TextPacket extends PacketBase {
                 this.parameters.forEach(param => StringCodec.write_string_vil(stream, param));
                 break;
         }
-        StringCodec.write_string_vil(stream, this.xuid);
-        StringCodec.write_string_vil(stream, this.platform_chat_id);
+        StringCodec.write_string_vil(stream, this.xuid || "");
+        StringCodec.write_string_vil(stream, this.platform_chat_id || "");
     }
 }
-
-
 
 module.exports = TextPacket;

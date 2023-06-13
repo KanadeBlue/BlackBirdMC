@@ -4,7 +4,7 @@ const ServerInfo = require('../../server_info');
 
 class VersionCommand extends Command {
   constructor() {
-    super("kick", [""], "Kick the player from the name.", "", "bluebirdmc.default.kick", BBMC.config.BBMC.Command.permission_message);
+    super("kick", [], "Kick the player from the name.", "", "bluebirdmc.default.kick", BBMC.config.BBMC.Command.permission_message);
   }
 
   async execute(sender, writtenCommand, args) {

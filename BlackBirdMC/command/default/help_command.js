@@ -6,18 +6,21 @@ class HelpCMD extends Command {
         super({
             name: "help",
             aliases: ["?"],
-            description: "Shows the help menu or for a certain command.", usageMessage: "",
+            description: "Shows the help menu or for a certain command.",
+            usageMessage: "",
             permission: "",
-            permissionMessage: BBMC.config.BBMC.Command.permission_message
+            permissionMessage: BBMC.config.BBMC.Command.permission_message,
         });
     }
 
     execute(sender, writtenCommand, args) {
-        const command = args.join(" ").toLowerCase();
+        let command = args.join(" ").toLowerCase();
         let page = 1;
 
         if (args.length > 0 && !isNaN(args[args.length - 1])) {
-            page = Math.max(1, parseInt(args.pop()));
+            page = Math.max(1, parseInt(args[args.length - 1]));
+            args.pop(); // Remove the last argument (page number) from the args array
+            command = args.join(" ").toLowerCase(); // Reconstruct the command string without the page number
         }
 
         if (command === "") {

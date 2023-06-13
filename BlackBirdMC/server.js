@@ -14,29 +14,18 @@ const Query = require("./api/Query");
 const Advertisement = require("./advertisement");
 
 class Server {
-  raknet_server;
-  players;
-  language;
-  plugins;
-  commands
-  console_command_reader;
-  query;
-  query_info;
-  whitelist;
-  advertisement;
-
   constructor() {
-    let startTime = Date.now();
-    this.players = new Map()
+    const startTime = Date.now();
+    this.players = new Map();
     this.language = new Language(BBMC.config.BBMC.language);
     this.commands = new CommandsList();
     this.console_command_reader = new CommandReader(this).handle();
     this.plugins = new PluginManager();
-    this.whitelist = require('../bbmc/whitelist.json')
-    this.advertisement = new Advertisement(this.players)
+    this.whitelist = require('../bbmc/whitelist.json');
+    this.advertisement = new Advertisement(this.players);
 
     if (BBMC.config.BBMC.Protocol.Query.enable) {
-      this.query_info = {
+      const queryInfo = {
         host: BBMC.config.Vanilla.Server.ip,
         port: BBMC.config.Vanilla.Server.port,
         max_players: BBMC.config.Vanilla.Server.max_players,
@@ -45,8 +34,10 @@ class Server {
         version: BBMC.config.Vanilla.Server.version.join('.'),
         plugins: [],
         engine: `${ServerInfo.engine} ${ServerInfo.version}`,
-      }
-      this.query = new Query(this.query_info)
+      };
+
+      this.query_info = Object.assign({}, queryInfo);
+      this.query = new Query(this.query_info);
     }
 
     this.raknet_server = new RakNetServer(
@@ -57,14 +48,14 @@ class Server {
 
     this.raknet_server.on("disconnect", (address) => {
       console.info(`${address.name}:${address.port} disconnected.`, ColorFormat.format_color("Client", "bold"));
-      let addr = address.toString();
+      const addr = address.toString();
       if (this.players.has(addr)) {
         this.players.delete(addr);
       }
     });
 
     this.raknet_server.on("connect", (connection) => {
-      let addr = connection.address.toString();
+      const addr = connection.address.toString();
       /**
        * @type {Player}
        */
@@ -95,13 +86,14 @@ class Server {
     (async () => {
       await this.plugins.start();
       this.plugins.doTask("onEnable");
+      
 
-      this.query_info.plugins = this.plugins.plugins.map((v) => v.options.name)
+      this.query_info.plugins = Object.keys(this.plugins.plugins).map((key) => this.plugins.plugins[key].options.name);
     })();
 
     process.on('SIGINT', () => {
-      this.plugins.doTask('onDisable')
-      process.exit(0)
+      this.plugins.doTask('onDisable');
+      process.exit(0);
     });
 
     process.on("SIGUSR2", () => {

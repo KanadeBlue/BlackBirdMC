@@ -21,7 +21,7 @@ class CommandsList {
         if (!(command.name in this.commands)) {
             this.commands[command.name] = command;
             this.commands[command.name].execute = command.execute.bind(command);
-            if (command.getAliases !== []) {
+            if (command.getAliases !== [] && command.getAliases !== [""]) {
                 command.aliases.forEach((aliasName) => {
                     this.alias[aliasName] = command;
                 })

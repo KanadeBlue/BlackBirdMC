@@ -81,7 +81,7 @@ class Server {
       PacketHandler.handler(stream, connection, this);
     });
 
-    console.info("Listening to 0.0.0.0:" + BBMC.config.Vanilla.Server.port, ColorFormat.format_color("Server", "bold"));
+    console.info(this.language.getContent("server", "server-listening", {"ip": "0.0.0.0", "port": BBMC.config.Vanilla.Server.port}), ColorFormat.format_color("Server", "bold"));
 
     (async () => {
       await this.plugins.start();
@@ -108,7 +108,7 @@ class Server {
       return;
     });
 
-    console.info(this.language.getContent("server", "loadFinish", (Date.now() - startTime) / 1000), ColorFormat.format_color("Server", "bold"));
+    console.info(this.language.getContent("server", "server-enabled", {"time": `${(Date.now() - startTime) / 1000}`}), ColorFormat.format_color("Server", "bold"));
   }
 }
 

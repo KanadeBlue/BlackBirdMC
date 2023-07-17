@@ -73,6 +73,7 @@ class Player {
                 this.handle_text_packet(stream)
                 break
             case PacketIdentifiers.COMMAND_REQUEST:
+                this.handle_command_request_packet(stream);
                 break;
         }
     }
@@ -84,10 +85,24 @@ class Player {
     }
 
     handle_command_request_packet(stream) {
-        let command_request_packet = new CommandRequestPacket()
-        command_request_packet.read(stream)
-        this.send_packet(stream.buffer)
-    }
+        let command_request_packet = new CommandRequestPacket();
+        command_request_packet.read(stream);
+      
+        // Handle the command request here
+        console.log(command_request_packet.command);
+      
+        let response = "Your command was received."; // Example response
+      
+        let text_packet = new TextPacket();
+        text_packet.type = TextPacket.TYPE_RAW;
+        text_packet.message = response;
+      
+        let responseStream = new BinaryStream();
+        text_packet.write(responseStream);
+      
+        this.send_packet(responseStream.buffer);
+      }
+      
 
     send_play_status(status) {
         let play_status = new PlayStatusPacket();

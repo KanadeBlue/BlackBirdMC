@@ -20,16 +20,20 @@ const { item_states } = require("./resources/item_states.json");
 const ItemState = require("./network/types/item_state");
 const TextPacket = require("./network/packets/text_packet");
 const CommandRequestPacket = require("./network/packets/command_request");
+const CommandPlayer = require("./player/player");
+
 
 class Player {
     connection;
     enable_compression;
     compression_algorithm;
+    server;
 
-    constructor(connection) {
+    constructor(connection, server) {
         this.connection = connection;
         this.enable_compression = false;
         this.compression_algorithm = 0;
+        this.server = server;
     }
 
     handle_packet(buffer) {
@@ -70,7 +74,7 @@ class Player {
                 }
                 break;
             case PacketIdentifiers.TEXT:
-                this.handle_text_packet(stream)
+                this.handle_text_packet(stream);
                 break
             case PacketIdentifiers.COMMAND_REQUEST:
                 this.handle_command_request_packet(stream);
@@ -87,19 +91,10 @@ class Player {
     handle_command_request_packet(stream) {
         let command_request_packet = new CommandRequestPacket();
         command_request_packet.read(stream);
-      
-        // Handle the command request here
-        console.log(command_request_packet.command);
-      
-        let response = "Your command was received.";
-      
-        let text_packet = new TextPacket();
-        text_packet.type = TextPacket.TYPE_RAW;
-        text_packet.message = response;
-      
-        let responseStream = new BinaryStream();
-        text_packet.write(responseStream);
-      
+
+
+        this.server.commands.dispatch(new CommandPlayer(this.server), command_request_packet.command.substring(1));
+        console.log(command_request_packet.command.substring(1))
         this.send_packet(responseStream.buffer);
       }
       

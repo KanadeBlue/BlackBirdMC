@@ -62,7 +62,7 @@ class Server {
       let player;
 
       if (!this.players.has(addr)) {
-        player = this.players.set(addr, new Player(connection)).get(addr);
+        player = this.players.set(addr, new Player(connection, this)).get(addr);
       }
 
       if (this.players.size > BBMC.config.Vanilla.Server.max_players) {

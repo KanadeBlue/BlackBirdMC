@@ -3,6 +3,7 @@
 const fs = require("fs");
 const ConsoleCommandSender = require("../utils/console_command_sender");
 const CommandSender = require("./command_sender");
+const Player = require("../player");
 
 class CommandsList {
 
@@ -46,6 +47,8 @@ class CommandsList {
         const command = this.get(cmd);
         if (command) {
             if (sender instanceof CommandSender) {
+                command.execute(sender, cmd, args);
+            } else if (sender instanceof Player) {
                 command.execute(sender, cmd, args);
             }
         } else {

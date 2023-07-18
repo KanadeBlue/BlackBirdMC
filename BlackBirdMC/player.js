@@ -91,7 +91,7 @@ class Player {
         // Handle the command request here
         console.log(command_request_packet.command);
       
-        let response = "Your command was received."; // Example response
+        let response = "Your command was received.";
       
         let text_packet = new TextPacket();
         text_packet.type = TextPacket.TYPE_RAW;

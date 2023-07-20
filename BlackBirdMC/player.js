@@ -24,6 +24,7 @@ const LevelChunkPacket = require("./network/packets/level_chunk_packet");
 const ChunkRadiusUpdatedPacket = require("./network/packets/chunk_radius_updated_packet");
 const NetworkChunkPublisherUpdatePacket = require("./network/packets/network_chunk_publisher_update");
 const BlockCoordinates = require("./network/types/block_coordinates");
+const RequestChunkRadiusPacket = require("./network/packets/request_chunk_radius_packet");
 
 
 class Player {
@@ -84,7 +85,7 @@ class Player {
             case PacketIdentifiers.COMMAND_REQUEST:
                 this.handle_command_request_packet(stream);
                 break;
-            case PacketIdentifiers.COMMAND_REQUEST:
+            case PacketIdentifiers.REQUEST_CHUNK_RADIUS:
                 this.request_chunk_radius_packet(stream);
                 break;
         }

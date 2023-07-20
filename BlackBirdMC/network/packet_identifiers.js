@@ -17,6 +17,7 @@ class PacketIdentifiers {
     static COMMAND_REQUEST = 0x4d;
     static LEVEL_CHUNK = 0x3a;
     static CHUNK_RADIUS_UPDATED = 0x46;
+    static REQUEST_CHUNK_RADIUS = 0x45;
     static NETWORK_CHUNK_PUBLISHER_UPDATE = 0x79;
 }
 

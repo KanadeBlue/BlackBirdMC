@@ -20,7 +20,10 @@ const { item_states } = require("./resources/item_states.json");
 const ItemState = require("./network/types/item_state");
 const TextPacket = require("./network/packets/text_packet");
 const CommandRequestPacket = require("./network/packets/command_request");
-const CommandPlayer = require("./player/player");
+const LevelChunkPacket = require("./network/packets/level_chunk_packet");
+const ChunkRadiusUpdatedPacket = require("./network/packets/chunk_radius_updated_packet");
+const NetworkChunkPublisherUpdatePacket = require("./network/packets/network_chunk_publisher_update");
+const BlockCoordinates = require("./network/types/block_coordinates");
 
 
 class Player {
@@ -28,6 +31,8 @@ class Player {
     enable_compression;
     compression_algorithm;
     server;
+    spawned = false;
+    chunkRadius = 2;
 
     constructor(connection, server) {
         this.connection = connection;
@@ -79,7 +84,53 @@ class Player {
             case PacketIdentifiers.COMMAND_REQUEST:
                 this.handle_command_request_packet(stream);
                 break;
+            case PacketIdentifiers.COMMAND_REQUEST:
+                this.request_chunk_radius_packet(stream);
+                break;
         }
+    }
+
+    request_chunk_radius_packet(stream) {
+
+        let chunkRadiusUpdated = new ChunkRadiusUpdatedPacket();
+        chunkRadiusUpdated.read(stream)
+        chunkRadiusUpdated.chunkRadius = this.chunkRadius;
+
+        if (!this.player.spawned) {
+            this.send_chunks(stream);
+            this.spawned = true;
+        }
+        this.send_packet(stream.buffer)
+    }
+
+    send_chunks(stream) {
+        return new Promise((resolve) => {
+            this.send_network_chunk_publisher_update(stream);
+            for (let chunkX = -this.chunkRadius; chunkX <= this.chunkRadius; ++chunkX) {
+                for (let chunkZ = -this.chunkRadius; chunkZ <= this.chunkRadius; ++chunkZ) {
+                    console.log(chunkX + (this.position.x >> 4), chunkZ + (this.position.z >> 4))
+                }
+            }
+            resolve();
+        });
+    }
+
+    send_network_chunk_publisher_update(stream) {
+        let networkChunkPublisherUpdate = new NetworkChunkPublisherUpdatePacket();
+        networkChunkPublisherUpdate.read(stream);
+        networkChunkPublisherUpdate.position = new BlockCoordinates();
+        networkChunkPublisherUpdate.position.x = Math.floor(0);
+        networkChunkPublisherUpdate.position.y = Math.floor(8);
+        networkChunkPublisherUpdate.position.z = Math.floor(0);
+        networkChunkPublisherUpdate.radius = this.chunkRadius << 4;
+        networkChunkPublisherUpdate.savedChunks = [];
+        this.send_packet(stream.buffer);
+    }
+
+    handle_level_chunk_packet(stream) {
+        let level_chunk_packet = new LevelChunkPacket();
+        level_chunk_packet.read(stream);
+        this.send_packet(stream.buffer)
     }
 
     handle_text_packet(stream) {
@@ -93,9 +144,8 @@ class Player {
         command_request_packet.read(stream);
 
 
-        this.server.commands.dispatch(new CommandPlayer(this.server), command_request_packet.command.substring(1));
-        console.log(command_request_packet.command.substring(1))
-        this.send_packet(responseStream.buffer);
+        this.server.commands.dispatch(this, command_request_packet.command.substring(1));
+        console.log(command_request_packet.command.substring(1));
       }
       
 

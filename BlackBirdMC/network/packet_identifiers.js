@@ -15,6 +15,9 @@ class PacketIdentifiers {
     static CREATIVE_CONTENT = 0x91;
     static BIOME_DEFINITION_LIST = 0x7a;
     static COMMAND_REQUEST = 0x4d;
+    static LEVEL_CHUNK = 0x3a;
+    static CHUNK_RADIUS_UPDATED = 0x46;
+    static NETWORK_CHUNK_PUBLISHER_UPDATE = 0x79;
 }
 
 module.exports = PacketIdentifiers;

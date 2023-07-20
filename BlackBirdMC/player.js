@@ -94,7 +94,7 @@ class Player {
     request_chunk_radius_packet(stream) {
 
         let chunkRadiusUpdated = new ChunkRadiusUpdatedPacket();
-        chunkRadiusUpdated.read(stream)
+        chunkRadiusUpdated.write(stream)
         chunkRadiusUpdated.chunkRadius = this.chunkRadius;
 
         if (!this.spawned) {
@@ -118,7 +118,7 @@ class Player {
 
     send_network_chunk_publisher_update(stream) {
         let networkChunkPublisherUpdate = new NetworkChunkPublisherUpdatePacket();
-        networkChunkPublisherUpdate.read(stream);
+        networkChunkPublisherUpdate.write(stream);
         networkChunkPublisherUpdate.position = new BlockCoordinates();
         networkChunkPublisherUpdate.position.x = Math.floor(0);
         networkChunkPublisherUpdate.position.y = Math.floor(8);
@@ -130,19 +130,19 @@ class Player {
 
     handle_level_chunk_packet(stream) {
         let level_chunk_packet = new LevelChunkPacket();
-        level_chunk_packet.read(stream);
+        level_chunk_packet.write(stream);
         this.send_packet(stream.buffer)
     }
 
     handle_text_packet(stream) {
         let text_packet = new TextPacket();
-        text_packet.read(stream);
+        text_packet.write(stream);
         this.send_packet(stream.buffer)
     }
 
     handle_command_request_packet(stream) {
         let command_request_packet = new CommandRequestPacket();
-        command_request_packet.read(stream);
+        command_request_packet.write(stream);
 
 
         this.server.commands.dispatch(this, command_request_packet.command.substring(1));

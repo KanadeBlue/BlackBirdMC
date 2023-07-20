@@ -2,7 +2,6 @@ const PacketBase = require("../packet_base");
 const PacketIdentifiers = require("../packet_identifiers");
 
 class ChunkRadiusUpdatedPacket extends PacketBase {
-    static id = Identifiers.chunkRadiusUpdated;
 
     chunkRadius;
 

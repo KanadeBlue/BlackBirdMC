@@ -25,6 +25,7 @@ const ChunkRadiusUpdatedPacket = require("./network/packets/chunk_radius_updated
 const NetworkChunkPublisherUpdatePacket = require("./network/packets/network_chunk_publisher_update");
 const BlockCoordinates = require("./network/types/block_coordinates");
 const RequestChunkRadiusPacket = require("./network/packets/request_chunk_radius_packet");
+const Vector3F = require("./network/constants/vector3f");
 
 
 class Player {
@@ -32,6 +33,7 @@ class Player {
     enable_compression;
     compression_algorithm;
     server;
+    position;
     spawned = false;
     chunkRadius = 2;
 
@@ -40,6 +42,10 @@ class Player {
         this.enable_compression = false;
         this.compression_algorithm = 0;
         this.server = server;
+        this.position = new Vector3F(); // TEMP UP UNLTI WORLDS ARE MADE
+        this.position.x = 0.0;
+        this.position.y = 8.0;
+        this.position.z = 0.0;
     }
 
     handle_packet(buffer) {

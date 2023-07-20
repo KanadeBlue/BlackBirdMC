@@ -86,27 +86,28 @@ class Player {
                 this.handle_command_request_packet(stream);
                 break;
             case PacketIdentifiers.REQUEST_CHUNK_RADIUS:
-                this.request_chunk_radius_packet(stream);
+                this.request_chunk_radius_packet();
                 break;
         }
     }
 
-    request_chunk_radius_packet(stream) {
+    request_chunk_radius_packet() {
 
         let chunkRadiusUpdated = new ChunkRadiusUpdatedPacket();
-        chunkRadiusUpdated.write(stream)
         chunkRadiusUpdated.chunkRadius = this.chunkRadius;
 
         if (!this.spawned) {
             this.send_chunks(stream);
             this.spawned = true;
         }
+        let stream = new BinaryStream();
+        chunkRadiusUpdated.write(stream)
         this.send_packet(stream.buffer)
     }
 
-    send_chunks(stream) {
+    send_chunks() {
         return new Promise((resolve) => {
-            this.send_network_chunk_publisher_update(stream);
+            this.send_network_chunk_publisher_update();
             for (let chunkX = -this.chunkRadius; chunkX <= this.chunkRadius; ++chunkX) {
                 for (let chunkZ = -this.chunkRadius; chunkZ <= this.chunkRadius; ++chunkZ) {
                     console.log(chunkX + (this.position.x >> 4), chunkZ + (this.position.z >> 4))
@@ -116,15 +117,16 @@ class Player {
         });
     }
 
-    send_network_chunk_publisher_update(stream) {
+    send_network_chunk_publisher_update() {
         let networkChunkPublisherUpdate = new NetworkChunkPublisherUpdatePacket();
-        networkChunkPublisherUpdate.write(stream);
         networkChunkPublisherUpdate.position = new BlockCoordinates();
         networkChunkPublisherUpdate.position.x = Math.floor(0);
         networkChunkPublisherUpdate.position.y = Math.floor(8);
         networkChunkPublisherUpdate.position.z = Math.floor(0);
         networkChunkPublisherUpdate.radius = this.chunkRadius << 4;
         networkChunkPublisherUpdate.savedChunks = [];
+        let stream = new BinaryStream();
+        networkChunkPublisherUpdate.write(stream);
         this.send_packet(stream.buffer);
     }
 

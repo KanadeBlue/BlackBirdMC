@@ -16,10 +16,10 @@ class World {
         if (!this.chunks.has(xz)) {
             if (false === false) {
                 this.chunks.set(xz, null);
-                this.generator.generate(x, z).then((value) => {
-                    this.chunks.set(xz, value);
-                });
+                const value = this.generator.generate(x, z);
+                this.chunks.set(xz, value);
             } else {
+                console.log("Can't load chunk at xz: " + xz);
                 // Handle the condition when the chunk cannot be loaded
             }
         }

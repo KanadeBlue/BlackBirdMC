@@ -48,8 +48,13 @@ class LevelChunkPacket extends PacketBase {
             }
             stream.writeVarInt(0);
         } else {
-            stream.writeByteArrayVarInt(this.payload);
+            this.writeByteArrayVarInt(this.payload, stream);
         }
+    }
+
+    writeByteArrayVarInt(value, stream) {
+        stream.writeVarInt(value.length);
+        stream.write(value);
     }
 }
 

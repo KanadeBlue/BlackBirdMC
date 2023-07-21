@@ -1,25 +1,25 @@
 class BlockStatesMap {
-    runtimeToLegacy;
-    legacyToRuntime;
+    #runtimeToLegacy;
+    #legacyToRuntime;
 
     constructor(nbt) {
-        this.runtimeToLegacy = new Map();
-        this.legacyToRuntime = new Map();
+        this.#runtimeToLegacy = [];
+        this.#legacyToRuntime = {};
         let oldName = null;
         let metadata = 0;
-
         for (let i = 0; i < nbt.value.length; ++i) {
             for (let j = 0; j < nbt.value[i].value.length; ++j) {
                 if (nbt.value[i].value[j].tagName === "name") {
-                    const name = nbt.value[i].value[j].value;
-                    if (name !== oldName) {
+                    if (nbt.value[i].value[j].value !== oldName) {
                         metadata = 0;
                     }
-                    const runtimeKey = `${name} ${metadata}`;
-                    this.runtimeToLegacy.set(i, { name, metadata });
-                    this.legacyToRuntime.set(runtimeKey, i);
+                    this.#runtimeToLegacy.push({
+                        name: nbt.value[i].value[j].value,
+                        metadata: metadata,
+                    });
+                    this.#legacyToRuntime[`${nbt.value[i].value[j].value} ${metadata}`] = i;
                     ++metadata;
-                    oldName = name;
+                    oldName = nbt.value[i].value[j].value;
                     break;
                 }
             }
@@ -27,12 +27,11 @@ class BlockStatesMap {
     }
 
     legacyToRuntime(name, metadata = 0) {
-        const runtimeKey = `${name} ${metadata}`;
-        return this.legacyToRuntime.get(runtimeKey);
+        return this.#legacyToRuntime[`${name} ${metadata}`];
     }
 
     runtimeToLegacy(runtimeID) {
-        return this.runtimeToLegacy.get(runtimeID);
+        return this.#runtimeToLegacy[runtimeID];
     }
 }
 

@@ -33,8 +33,8 @@ class Server {
     this.advertisement = new Advertisement(this.players);
     this.resource = new ResourceManager();
     this.generator = new GeneratorManager(this.resource.blockStatesMap);
-    this.world = new World(this.generator);
     this.generator.registerGenerator(Overworld);
+    this.world = new World(new GeneratorManager(this.resource.blockStatesMap));
 
     if (BBMC.config.BBMC.Protocol.Query.enable) {
       const queryInfo = {

@@ -12,6 +12,14 @@ const CommandReader = require("./utils/command_reader");
 const ServerInfo = require("./server_info");
 const Query = require("./api/Query");
 const Advertisement = require("./advertisement");
+const GeneratorManager = require("./utils/generator_manager");
+const ResourceManager = require("./utils/resource_manager");
+const Overworld = require("./world/generators/overworld");
+const World = require("./world/world");
+const fs = require("fs");
+const path = require("path");
+const worldsPath = "./bbmc/worlds";
+
 
 class Server {
   constructor() {
@@ -23,6 +31,9 @@ class Server {
     this.plugins = new PluginManager();
     this.whitelist = require('../bbmc/whitelist.json');
     this.advertisement = new Advertisement(this.players);
+    this.resource = new ResourceManager();
+    this.generator = new GeneratorManager(this.resource.blockStatesMap);
+    this.world = new World(this.generator);
 
     if (BBMC.config.BBMC.Protocol.Query.enable) {
       const queryInfo = {
@@ -110,6 +121,11 @@ class Server {
 
     console.info(this.language.getContent("server", "server-enabled", {"time": `${(Date.now() - startTime) / 1000}`}), ColorFormat.format_color("Server", "bold"));
   }
+
+  registerDefaultGenerators() {
+    this.generator.registerGenerator(Overworld);
+  }
+
 }
 
 module.exports = Server;

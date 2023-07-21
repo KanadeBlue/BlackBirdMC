@@ -26,6 +26,7 @@ const NetworkChunkPublisherUpdatePacket = require("./network/packets/network_chu
 const BlockCoordinates = require("./network/types/block_coordinates");
 const RequestChunkRadiusPacket = require("./network/packets/request_chunk_radius_packet");
 const Vector3F = require("./network/constants/vector3f");
+const ChunkCodec = require("./network/codecs/chunk_codec");
 
 
 class Player {
@@ -116,11 +117,28 @@ class Player {
             this.send_network_chunk_publisher_update();
             for (let chunkX = -this.chunkRadius; chunkX <= this.chunkRadius; ++chunkX) {
                 for (let chunkZ = -this.chunkRadius; chunkZ <= this.chunkRadius; ++chunkZ) {
-                    console.log(chunkX + (this.position.x >> 4), chunkZ + (this.position.z >> 4))
+                    this.server.world.loadChunk(chunkX + (this.position.x >> 4), chunkZ + (this.position.z >> 4)).then((chunk) => {
+                        this.send_chunk(chunk);
+                    })
                 }
             }
             resolve();
         });
+    }
+
+    send_chunk(chunk) {
+        let levelChunk = new LevelChunkPacket();
+        levelChunk.subChunkCount = chunk.getSubChunksSendCount();
+        levelChunk.highestSubChunkCount = 0;
+        levelChunk.cacheEnabled = false;
+        levelChunk.x = chunk.x;
+        levelChunk.z = chunk.z;
+        let stream = new BinaryStream();
+        let chunk_stream = new ChunkCodec();
+        levelChunk.write(stream)
+        chunk_stream.writeChunk(chunk, levelChunk.subChunkCount, this.server.resource.blockStatesMap.legacyToRuntime("minecraft:air", 0));
+        levelChunk.payload = stream.buffer;
+        this.send_packet(stream.buffer);
     }
 
     send_network_chunk_publisher_update() {

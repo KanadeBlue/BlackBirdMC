@@ -7,7 +7,7 @@ class Overworld extends World {
 
     generate(chunkX, chunkZ) {
         return new Promise((resolve) => {
-            let air = this.blockStatesMap.legacyToRuntime("minecraft:air", 0);
+            let air = "air";
             let chunk = new Chunk(chunkX, chunkZ, air);
             let perlin = new Perlin();
             let biomeMap = [];

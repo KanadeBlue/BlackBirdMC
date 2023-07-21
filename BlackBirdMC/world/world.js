@@ -16,8 +16,9 @@ class World {
         if (!this.chunks.has(xz)) {
             if (false === false) {
                 this.chunks.set(xz, null);
-                const value = await this.generator.generate(x, z);
-                this.chunks.set(xz, value);
+                this.generator.generate(x, z).then((value) => {
+                    this.chunks.set(xz, value);
+                });
             } else {
                 // Handle the condition when the chunk cannot be loaded
             }

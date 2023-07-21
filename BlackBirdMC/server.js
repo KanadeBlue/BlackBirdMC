@@ -34,7 +34,7 @@ class Server {
     this.resource = new ResourceManager();
     this.generator = new GeneratorManager(this.resource.blockStatesMap);
     this.generator.registerGenerator(Overworld);
-    this.world = new World(new GeneratorManager(this.resource.blockStatesMap));
+    this.world = new World(this.generator);
 
     if (BBMC.config.BBMC.Protocol.Query.enable) {
       const queryInfo = {

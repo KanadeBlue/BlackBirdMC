@@ -8,7 +8,7 @@ class GeneratorManager {
     }
 
     getGenerator(name) {
-        return this.generators.get(name) || null;
+        return this.generators.get(name);
     }
 
     registerGenerator(generator) {

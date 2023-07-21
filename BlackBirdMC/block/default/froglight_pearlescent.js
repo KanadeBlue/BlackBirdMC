@@ -1,20 +1,20 @@
 const Block = require("../block");
 const Tool = require("../tool");
 
-class Stone extends Block {
+class FroglightPearlescent extends Block {
     maxStack = 64;
-    tool = Tool.pickaxe;
-    blastResistance = 6;
-    hardness = 1.5;
-    isLuminant = false;
+    tool = Tool.none;
+    blastResistance = 0.3;
+    hardness = 0.3;
+    isLuminant = true;
     isTransparrent = false;
     isFlammable = false;
     catchesFireFromLava = false;
     isFallable = false;
 
     constructor() {
-        super("minecraft:stone", 0);
+        super("minecraft:pearlescent_froglight", 0);
     }
 }
 
-module.exports = Stone;
+module.exports = FroglightPearlescent;

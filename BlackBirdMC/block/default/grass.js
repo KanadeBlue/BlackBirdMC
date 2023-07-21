@@ -10,6 +10,7 @@ class Grass extends Block {
     isTransparrent = false;
     isFlammable = false;
     catchesFireFromLava = false;
+    isFallable = false;
 
     constructor() {
         super("minecraft:grass", 0);

@@ -8,6 +8,7 @@ class Block {
     isLuminant;
     isTransparrent;
     isFlammable;
+    isFallable;
     catchesFireFromLava;
 
     constructor(blockName, metadata = 0) {

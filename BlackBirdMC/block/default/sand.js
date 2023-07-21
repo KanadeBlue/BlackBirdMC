@@ -1,20 +1,20 @@
 const Block = require("../block");
 const Tool = require("../tool");
 
-class Stone extends Block {
+class Sand extends Block {
     maxStack = 64;
-    tool = Tool.pickaxe;
-    blastResistance = 6;
-    hardness = 1.5;
+    tool = Tool.shovel;
+    blastResistance = 0.5;
+    hardness = 0.5;
     isLuminant = false;
     isTransparrent = false;
     isFlammable = false;
     catchesFireFromLava = false;
-    isFallable = false;
+    isFallable = true;
 
     constructor() {
-        super("minecraft:stone", 0);
+        super("minecraft:sand", 0);
     }
 }
 
-module.exports = Stone;
+module.exports = Sand;

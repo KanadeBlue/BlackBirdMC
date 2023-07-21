@@ -1,20 +1,20 @@
 const Block = require("../block");
 const Tool = require("../tool");
 
-class Air extends Block {
+class Dirt extends Block {
     maxStack = 64;
-    tool = Tool.none;
-    blastResistance = 0;
-    hardness = 0;
+    tool = Tool.shovel;
+    blastResistance = 0.5;
+    hardness = 0.5;
     isLuminant = false;
-    isTransparrent = true;
+    isTransparrent = false;
     isFlammable = false;
     catchesFireFromLava = false;
     isFallable = false;
 
     constructor() {
-        super("minecraft:air", 1);
+        super("minecraft:dirt", 0);
     }
 }
 
-module.exports = Air;
+module.exports = Dirt;

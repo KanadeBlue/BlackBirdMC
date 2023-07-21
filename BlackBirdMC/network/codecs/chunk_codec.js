@@ -6,10 +6,10 @@ class ChunkCodec {
 
     static writeChunk(value, count, runtimeID) {
         const stream = new BinaryStream();
-        this.writeSubChunk(new SubChunk(runtimeID), stream);
+        ChunkCodec.writeSubChunk(new SubChunk(runtimeID), stream);
         for (let i = 0; i < count; ++i) {
             if (value.subChunks.has(i)) {
-                this.writeSubChunk(value.subChunks.get(i));
+                ChunkCodec.writeSubChunk(value.subChunks.get(i));
             } else {
                 BinaryStream.write(stream.buffer);
             }

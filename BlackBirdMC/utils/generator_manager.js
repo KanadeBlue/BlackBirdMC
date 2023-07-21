@@ -1,4 +1,7 @@
 class GeneratorManager {
+    generators;
+    blockStatesMap;
+
     constructor(blockStatesMap) {
         this.blockStatesMap = blockStatesMap;
         this.generators = new Map();

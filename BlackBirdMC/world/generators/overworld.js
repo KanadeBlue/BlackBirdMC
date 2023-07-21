@@ -42,7 +42,7 @@ class Overworld extends World {
                             } else if (biome === 'forest') {
                                 blockType = 'grass';
                             }
-                            chunk.setBlockStateId(x, y, z, this.blockStatesMap.legacyToRuntime(`minecraft:${blockType}`, 0));
+                            chunk.setBlockRuntimeID(x, y, z, 0, this.blockStatesMap.legacyToRuntime(`minecraft:${blockType}`, 0));
                         }
                     }
                 }

@@ -8,7 +8,7 @@ class World {
     constructor(generatorManager) {
         this.generatorManager = generatorManager;
         this.chunks = new Map();
-        this.generator = this.generatorManager.getGenerator("overworld");
+        this.generator = generatorManager.getGenerator("overworld");
     }
 
     async loadChunk(x, z) {

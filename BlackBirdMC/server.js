@@ -16,9 +16,7 @@ const GeneratorManager = require("./utils/generator_manager");
 const ResourceManager = require("./utils/resource_manager");
 const Overworld = require("./world/generators/overworld");
 const World = require("./world/world");
-const fs = require("fs");
-const path = require("path");
-const worldsPath = "./bbmc/worlds";
+const Blocks = require("./block/block_list");
 
 
 class Server {
@@ -35,6 +33,8 @@ class Server {
     this.generator = new GeneratorManager(this.resource.blockStatesMap);
     this.generator.registerGenerator(Overworld);
     this.world = new World(this.generator);
+
+    Blocks.refresh();
 
     if (BBMC.config.BBMC.Protocol.Query.enable) {
       const queryInfo = {

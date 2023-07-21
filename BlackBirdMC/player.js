@@ -137,7 +137,7 @@ class Player {
         levelChunk.payload = stream.buffer;
         levelChunk.write(stream);
         const chunkCodec = new ChunkCodec();
-        chunkCodec.writeChunk(chunk, levelChunk.subChunkCount, this.server.resource.blockStatesMap.legacyToRuntime("minecraft:air", 0));
+        ChunkCodec.writeChunk(chunk, levelChunk.subChunkCount, this.server.resource.blockStatesMap.legacyToRuntime("minecraft:air", 0));
         this.send_packet(stream.buffer);
     }
 

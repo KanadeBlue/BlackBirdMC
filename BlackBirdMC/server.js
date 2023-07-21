@@ -30,6 +30,7 @@ class Server {
     this.whitelist = require('../bbmc/whitelist.json');
     this.advertisement = new Advertisement(this.players);
     this.resource = new ResourceManager();
+    this.resource.loadResources();
     this.generator = new GeneratorManager(this.resource.blockStatesMap);
     this.generator.registerGenerator(Overworld);
     this.world = new World(this.generator);

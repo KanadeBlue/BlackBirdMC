@@ -2,8 +2,8 @@ const ItemState = require("../network/types/item_state");
 
 class ItemStatesMap {
   states;
-  runtimeToName;
-  nameToRuntime;
+  runtimeToNameArr;
+  nameToRuntimeArr;
 
   constructor(states) {
     this.states = states.map((entry) => {
@@ -14,23 +14,23 @@ class ItemStatesMap {
       return state;
     });
 
-    this.runtimeToName = this.states.reduce((map, state) => {
+    this.runtimeToNameArr = this.states.reduce((map, state) => {
       map[state.runtime_id] = state.name;
       return map;
     }, {});
 
-    this.nameToRuntime = this.states.reduce((map, state) => {
+    this.nameToRuntimeArr = this.states.reduce((map, state) => {
       map[state.name] = state.runtime_id;
       return map;
     }, {});
   }
 
   runtimeToName(runtimeID) {
-    return this.runtimeToName[runtimeID];
+    return this.runtimeToNameArr[runtimeID];
   }
 
   nameToRuntime(name) {
-    return this.nameToRuntime[name];
+    return this.nameToRuntimeArr[name];
   }
 }
 

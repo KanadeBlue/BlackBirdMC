@@ -1,4 +1,5 @@
 class World {
+    static generatorName;
     blockStatesMap;
     
     constructor(blockStatesMap) {

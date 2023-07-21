@@ -135,9 +135,8 @@ class Player {
         levelChunk.z = chunk.z;
         let stream = new BinaryStream();
         levelChunk.payload = stream.buffer;
-        let chunk_stream = new ChunkCodec();
-        levelChunk.write(stream)
-        chunk_stream.writeChunk(chunk, levelChunk.subChunkCount, this.server.resource.blockStatesMap.legacyToRuntime("minecraft:air", 0));
+        levelChunk.write(stream);
+        new ChunkCodec().writeChunk(chunk, levelChunk.subChunkCount, this.server.resource.blockStatesMap.legacyToRuntime("minecraft:air", 0));
         this.send_packet(stream.buffer);
     }
 

@@ -78,6 +78,7 @@ class Server {
         player = this.players.set(addr, new Player(connection, this)).get(addr);
       }
 
+
       if (this.players.size > BBMC.config.Vanilla.Server.max_players) {
         player.send_play_status(PlayStatus.FAILED_SERVER_FULL);
       }

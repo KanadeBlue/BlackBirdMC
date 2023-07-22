@@ -37,6 +37,7 @@ class Player {
     position;
     spawned = false;
     chunkRadius = 2;
+    name;
 
     constructor(connection, server) {
         this.connection = connection;

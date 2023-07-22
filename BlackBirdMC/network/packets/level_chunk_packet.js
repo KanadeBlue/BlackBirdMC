@@ -1,61 +1,59 @@
-const PacketIdentifiers = require("../packet_identifiers");
+const { LEVEL_CHUNK } = require("../packet_identifiers");
 const PacketBase = require("../packet_base");
 
 class LevelChunkPacket extends PacketBase {
+  constructor() {
+    super(LEVEL_CHUNK);
+    this.hashes = [];
+  }
 
-    x;
-    z;
-    subChunkCount;
-    highestSubChunkCount;
-    cacheEnabled;
-    hashes;
-    payload;
+  read(stream) {
+    this.x = stream.readSignedVarInt();
+    this.z = stream.readSignedVarInt();
+    this.subChunkCount = stream.readVarInt();
 
-    constructor() {
-        super(PacketIdentifiers.LEVEL_CHUNK);
+    if (this.subChunkCount === 0xfffffffe) {
+      this.highestSubChunkCount = stream.readUnsignedShortLE();
     }
 
-    read(stream) {
-        this.x = stream.readSignedVarInt();
-        this.z = stream.readSignedVarInt();
-        this.subChunkCount = stream.readVarInt();
-        if (this.subChunkCount == 0xfffffffe) {
-            this.highestSubChunkCount = stream.readUnsignedShortLE();
-        }
-        this.cacheEnabled = stream.readBool();
-        if (this.cacheEnabled === true) {
-            this.hashes = [];
-            let hashesCount = stream.readVarInt();
-            for (let i = 0; i < hashesCount; ++i) {
-                this.hashes.push(stream.readUnsignedLongLE());
-            }
-        }
-        this.payload = stream.readByteArrayVarInt();
+    this.cacheEnabled = stream.readBool();
+
+    if (this.cacheEnabled) {
+      const hashesCount = stream.readVarInt();
+      for (let i = 0; i < hashesCount; ++i) {
+        this.hashes.push(stream.readUnsignedLongLE());
+      }
     }
 
-    write(stream) {
-        stream.writeSignedVarInt(this.x);
-        stream.writeSignedVarInt(this.z);
-        stream.writeVarInt(this.subChunkCount);
-        if (this.subChunkCount == 0xfffffffe) {
-            stream.writeUnsignedShortLE(this.highestSubChunkCount);
-        }
-        stream.writeBool(this.cacheEnabled);
-        if (this.cacheEnabled === true) {
-            stream.writeVarInt(this.hashes.length);
-            for (let i = 0; i < this.hashes.length; ++i) {
-                stream.writeUnsignedLongLE(this.hashes[i]);
-            }
-            stream.writeVarInt(0);
-        } else {
-            this.writeByteArrayVarInt(this.payload, stream);
-        }
+    this.payload = stream.readByteArrayVarInt();
+  }
+
+  write(stream) {
+    stream.writeSignedVarInt(this.x);
+    stream.writeSignedVarInt(this.z);
+    stream.writeVarInt(this.subChunkCount);
+
+    if (this.subChunkCount === 0xfffffffe) {
+      stream.writeUnsignedShortLE(this.highestSubChunkCount);
     }
 
-    writeByteArrayVarInt(value, stream) {
-        stream.writeVarInt(value.length);
-        stream.write(value);
+    stream.writeBool(this.cacheEnabled);
+
+    if (this.cacheEnabled) {
+      stream.writeVarInt(this.hashes.length);
+      for (let i = 0; i < this.hashes.length; ++i) {
+        stream.writeUnsignedLongLE(this.hashes[i]);
+      }
+      stream.writeVarInt(0);
+    } else {
+      this.writeByteArrayVarInt(this.payload, stream);
     }
+  }
+
+  writeByteArrayVarInt(value, stream) {
+    stream.writeVarInt(value.length);
+    stream.write(value);
+  }
 }
 
 module.exports = LevelChunkPacket;

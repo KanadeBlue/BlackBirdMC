@@ -20,16 +20,34 @@ const { item_states } = require("./resources/item_states.json");
 const ItemState = require("./network/types/item_state");
 const TextPacket = require("./network/packets/text_packet");
 const CommandRequestPacket = require("./network/packets/command_request");
+const LevelChunkPacket = require("./network/packets/level_chunk_packet");
+const ChunkRadiusUpdatedPacket = require("./network/packets/chunk_radius_updated_packet");
+const NetworkChunkPublisherUpdatePacket = require("./network/packets/network_chunk_publisher_update");
+const BlockCoordinates = require("./network/types/block_coordinates");
+const RequestChunkRadiusPacket = require("./network/packets/request_chunk_radius_packet");
+const Vector3F = require("./network/constants/vector3f");
+const ChunkCodec = require("./network/codecs/chunk_codec");
+
 
 class Player {
     connection;
     enable_compression;
     compression_algorithm;
+    server;
+    position;
+    spawned = false;
+    chunkRadius = 2;
+    name;
 
-    constructor(connection) {
+    constructor(connection, server) {
         this.connection = connection;
         this.enable_compression = false;
         this.compression_algorithm = 0;
+        this.server = server;
+        this.position = new Vector3F(); // TEMP UP UNLTI WORLDS ARE MADE
+        this.position.x = 0.0;
+        this.position.y = 8.0;
+        this.position.z = 0.0;
     }
 
     handle_packet(buffer) {
@@ -70,24 +88,94 @@ class Player {
                 }
                 break;
             case PacketIdentifiers.TEXT:
-                this.handle_text_packet(stream)
+                this.handle_text_packet(stream);
                 break
             case PacketIdentifiers.COMMAND_REQUEST:
+                this.handle_command_request_packet(stream);
+                break;
+            case PacketIdentifiers.REQUEST_CHUNK_RADIUS:
+                this.request_chunk_radius_packet();
                 break;
         }
     }
 
+    request_chunk_radius_packet() {
+
+        let chunkRadiusUpdated = new ChunkRadiusUpdatedPacket();
+        chunkRadiusUpdated.chunkRadius = this.chunkRadius;
+
+        if (!this.spawned) {
+            this.send_chunks();
+            this.spawned = true;
+        }
+        let stream = new BinaryStream();
+        chunkRadiusUpdated.write(stream)
+        this.send_packet(stream.buffer)
+    }
+
+    send_chunks() {
+        return new Promise((resolve) => {
+            this.send_network_chunk_publisher_update();
+            for (let chunkX = -this.chunkRadius; chunkX <= this.chunkRadius; ++chunkX) {
+                for (let chunkZ = -this.chunkRadius; chunkZ <= this.chunkRadius; ++chunkZ) {
+                    this.server.world.loadChunk(chunkX + (this.position.x >> 4), chunkZ + (this.position.z >> 4)).then((chunk) => {
+                        this.send_chunk(chunk);
+                    })
+                }
+            }
+            resolve();
+        });
+    }
+
+    send_chunk(chunk) {
+        let levelChunk = new LevelChunkPacket();
+        levelChunk.subChunkCount = chunk.getSubChunksSendCount();
+        levelChunk.highestSubChunkCount = 0;
+        levelChunk.cacheEnabled = false;
+        levelChunk.x = chunk.x;
+        levelChunk.z = chunk.z;
+        let stream = new BinaryStream();
+        levelChunk.payload = stream.buffer;
+        levelChunk.write(stream);
+        const chunkCodec = new ChunkCodec();
+        ChunkCodec.writeChunk(chunk, levelChunk.subChunkCount, this.server.resource.blockStatesMap.legacyToRuntime("minecraft:air", 0));
+        this.send_packet(stream.buffer);
+    }
+
+    send_network_chunk_publisher_update() {
+        let networkChunkPublisherUpdate = new NetworkChunkPublisherUpdatePacket();
+        networkChunkPublisherUpdate.position = new BlockCoordinates();
+        networkChunkPublisherUpdate.position.x = Math.floor(0);
+        networkChunkPublisherUpdate.position.y = Math.floor(8);
+        networkChunkPublisherUpdate.position.z = Math.floor(0);
+        networkChunkPublisherUpdate.radius = this.chunkRadius << 4;
+        networkChunkPublisherUpdate.savedChunks = [];
+        let stream = new BinaryStream();
+        networkChunkPublisherUpdate.write(stream);
+        this.send_packet(stream.buffer);
+    }
+
+    handle_level_chunk_packet(stream) {
+        let level_chunk_packet = new LevelChunkPacket();
+        level_chunk_packet.write(stream);
+        this.send_packet(stream.buffer)
+    }
+
     handle_text_packet(stream) {
         let text_packet = new TextPacket();
-        text_packet.read(stream);
+        text_packet.write(stream);
         this.send_packet(stream.buffer)
     }
 
     handle_command_request_packet(stream) {
-        let command_request_packet = new CommandRequestPacket()
-        command_request_packet.read(stream)
-        this.send_packet(stream.buffer)
-    }
+        let command_request_packet = new CommandRequestPacket();
+        command_request_packet.write(stream);
+
+
+        this.server.commands.dispatch(this, command_request_packet.command.substring(1));
+        console.log(command_request_packet.command.substring(1));
+      }
+      
 
     send_play_status(status) {
         let play_status = new PlayStatusPacket();

@@ -12,6 +12,12 @@ const CommandReader = require("./utils/command_reader");
 const ServerInfo = require("./server_info");
 const Query = require("./api/Query");
 const Advertisement = require("./advertisement");
+const GeneratorManager = require("./utils/generator_manager");
+const ResourceManager = require("./utils/resource_manager");
+const Overworld = require("./world/generators/overworld");
+const World = require("./world/world");
+const Blocks = require("./block/block_list");
+
 
 class Server {
   constructor() {
@@ -23,6 +29,13 @@ class Server {
     this.plugins = new PluginManager();
     this.whitelist = require('../bbmc/whitelist.json');
     this.advertisement = new Advertisement(this.players);
+    this.resource = new ResourceManager();
+    this.resource.loadResources();
+    this.generator = new GeneratorManager(this.resource.blockStatesMap);
+    this.generator.registerGenerator(Overworld);
+    this.world = new World(this.generator);
+
+    Blocks.refresh();
 
     if (BBMC.config.BBMC.Protocol.Query.enable) {
       const queryInfo = {
@@ -62,8 +75,9 @@ class Server {
       let player;
 
       if (!this.players.has(addr)) {
-        player = this.players.set(addr, new Player(connection)).get(addr);
+        player = this.players.set(addr, new Player(connection, this)).get(addr);
       }
+
 
       if (this.players.size > BBMC.config.Vanilla.Server.max_players) {
         player.send_play_status(PlayStatus.FAILED_SERVER_FULL);
@@ -110,6 +124,10 @@ class Server {
 
     console.info(this.language.getContent("server", "server-enabled", {"time": `${(Date.now() - startTime) / 1000}`}), ColorFormat.format_color("Server", "bold"));
   }
+
+  registerDefaultGenerators() {
+  }
+
 }
 
 module.exports = Server;

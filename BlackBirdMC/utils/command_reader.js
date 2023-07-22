@@ -2,6 +2,7 @@ const readline = require("readline");
 const ConsoleCommandSender = require("./console_command_sender");
 
 class CommandReader {
+    server;
     constructor(server) {
         this.server = server;
         this.consoleCommandSender = new ConsoleCommandSender(this.server);

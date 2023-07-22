@@ -2,6 +2,14 @@ const { LEVEL_CHUNK } = require("../packet_identifiers");
 const PacketBase = require("../packet_base");
 
 class LevelChunkPacket extends PacketBase {
+  x;
+  z;
+  subChunkCount;
+  highestSubChunkCount;
+  cacheEnabled;
+  hashes;
+  payload;
+
   constructor() {
     super(LEVEL_CHUNK);
     this.hashes = [];
@@ -17,15 +25,7 @@ class LevelChunkPacket extends PacketBase {
     }
 
     this.cacheEnabled = stream.readBool();
-
-    if (this.cacheEnabled) {
-      const hashesCount = stream.readVarInt();
-      for (let i = 0; i < hashesCount; ++i) {
-        this.hashes.push(stream.readUnsignedLongLE());
-      }
-    }
-
-    this.payload = stream.readByteArrayVarInt();
+    this.payload = stream.read(stream.readVarInt());
   }
 
   write(stream) {
@@ -38,17 +38,8 @@ class LevelChunkPacket extends PacketBase {
     }
 
     stream.writeBool(this.cacheEnabled);
-
-    if (this.cacheEnabled) {
-      stream.writeVarInt(this.hashes.length);
-      for (let i = 0; i < this.hashes.length; ++i) {
-        stream.writeUnsignedLongLE(this.hashes[i]);
-      }
-      stream.writeVarInt(0);
-    } else {
-      stream.writeVarInt(this.payload.length);
-      stream.write(this.payload);
-    }
+    stream.writeVarInt(this.payload.length);
+    stream.write(this.payload);
   }
 
 }

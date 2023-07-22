@@ -63,14 +63,16 @@ class Server {
     this.raknet_server.on("disconnect", (address) => {
       console.info(`${address.name}:${address.port} disconnected.`, ColorFormat.format_color("Client", "bold"));
       const addr = address.toString();
+      RakNetPlayer.unregister_player(addr);
       if (this.players.has(addr)) {
         this.players.delete(addr);
       }
-      RakNetPlayer.register_player(addr, new Player(connection, this));
     });
 
     this.raknet_server.on("connect", (connection) => {
       const addr = connection.address.toString();
+
+      RakNetPlayer.register_player(addr, new Player(connection, this));
       /**
        * @type {Player}
        */

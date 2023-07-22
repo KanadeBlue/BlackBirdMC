@@ -1,5 +1,5 @@
 class RakNetPlayer {
-    static players_data = {};
+    players_data;
 
     /**
      * Get the player associated with the given address.

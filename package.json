@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "eslint": "^8.40.0",
-    "minecraft-server-util": "^5.4.4",
     "nodemon": "^3.0.1",
     "swagger-autogen": "^2.23.1"
   },

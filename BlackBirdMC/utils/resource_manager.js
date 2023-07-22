@@ -20,24 +20,20 @@ class ResourceManager {
     readBiomeDefinitionList() {
         let stream = new NBTNetworkBinaryStream(this.readFile("biome_definition_list.nbt"));
         this.biomeDefinitionList = stream.readRootTag();
-        console.debug("Loaded biome_definition_list.nbt");
     }
 
     readAvailableEntityIdentifiers() {
         let stream = new NBTNetworkBinaryStream(this.readFile("available_entity_identifiers.nbt"));
         this.availableEntityIdentifiers = stream.readRootTag();
-        console.debug("Loaded available_entity_identifiers.nbt");
     }
 
     readBlockStates() {
         let stream = new NBTNetworkBinaryStream(this.readFile("block_states.nbt"));
         this.blockStatesMap = new BlockStatesMap(stream.readCompoundTag());
-        console.debug("Loaded block_states.nbt");
     }
 
     readItemStates() {
         this.itemStatesMap = new ItemStatesMap(JSON.parse(this.readFile("item_states.json")));
-        console.debug("Loaded items_states.json");
     }
 
     readCreativeItems() {
@@ -65,17 +61,14 @@ class ResourceManager {
             this.creativeItems[entryID] = item;
             ++entryID;
         }
-         console.debug("Loaded creative_items.json");
     }
 
     loadResources() {
-        console.debug("Loading resources");
         this.readBiomeDefinitionList();
         this.readAvailableEntityIdentifiers();
         this.readBlockStates();           
         this.readItemStates();
         this.readCreativeItems();
-        console.debug("Resources Loaded");
     }
 }
 

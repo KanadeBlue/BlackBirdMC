@@ -8,8 +8,8 @@ const Server = require("./server");
 
 async function main() {
   await Promise.all([
-    require("./utils/logging_format")(),
-    require("./utils/configuration")()
+    await require("./utils/configuration")(),
+    require("./utils/logging_format")()
   ]);
 
   return new Server();

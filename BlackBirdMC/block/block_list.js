@@ -12,7 +12,6 @@ class BlocksList {
         this.add(new block.default());
       }
     } catch (err) {
-      console.error("Error while refreshing blocks:", err);
     }
   }
 

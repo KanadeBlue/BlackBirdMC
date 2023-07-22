@@ -104,13 +104,10 @@ class Player {
         let chunkRadiusUpdated = new ChunkRadiusUpdatedPacket();
         chunkRadiusUpdated.chunkRadius = this.chunkRadius;
 
-        if (!this.spawned) {
-            this.send_chunks();
-            this.spawned = true;
-        }
+        this.send_chunks();
         let stream = new BinaryStream();
-        chunkRadiusUpdated.write(stream)
-        this.send_packet(stream.buffer)
+        chunkRadiusUpdated.write(stream);
+        this.send_packet(stream.buffer);
     }
 
     send_chunks() {

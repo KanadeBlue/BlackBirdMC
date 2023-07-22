@@ -35,7 +35,7 @@ BBMC under active development.
 ## Related
 
 [Discord](https://discord.gg/rZ6DBFzDYe) <br>
-[Plugin Example](https://github.com/BlackBirdMC/BBMC-TestPlugin) <br>
+[Plugin Example](https://github.com/BlackBirdMC/Example-Plugin) <br>
 [Protocol](https://github.com/BlackBirdMC/Protocol)
 
 ## License

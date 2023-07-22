@@ -27,6 +27,7 @@ const BlockCoordinates = require("./network/types/block_coordinates");
 const RequestChunkRadiusPacket = require("./network/packets/request_chunk_radius_packet");
 const Vector3F = require("./network/constants/vector3f");
 const ChunkCodec = require("./network/codecs/chunk_codec");
+const DisconnectPacket = require("./network/packets/disconnect_packet");
 
 
 class Player {
@@ -48,6 +49,15 @@ class Player {
         this.position.x = 0.0;
         this.position.y = 8.0;
         this.position.z = 0.0;
+    }
+
+    kick(message, hide_notification = false) {
+        let disconnect = new DisconnectPacket();
+        let stream = new BinaryStream();
+        disconnect.message = message;
+        disconnect.hide_notification = hide_notification;
+        disconnect.write(stream);
+        this.send_packet(stream.buffer)
     }
 
     handle_packet(buffer) {
@@ -98,6 +108,8 @@ class Player {
                 break;
         }
     }
+
+    
 
     request_chunk_radius_packet() {
 

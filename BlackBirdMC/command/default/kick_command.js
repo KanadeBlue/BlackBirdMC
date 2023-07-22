@@ -11,9 +11,8 @@ class VersionCommand extends Command {
     if (sender.name === "Console" && !args[0]) {
       //sender.message(sender.server.language.getContent("player", "loaded"));
     } else if (args[0]) {
-      // finish console kick later.
     } else if (sender.name !== "Console") {
-      // finish player kick later.
+      sender.kick(args[0]);
     }
   }
 }

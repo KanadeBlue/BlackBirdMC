@@ -17,6 +17,7 @@ const ResourceManager = require("./utils/resource_manager");
 const Overworld = require("./world/generators/overworld");
 const World = require("./world/world");
 const Blocks = require("./block/block_list");
+const RakNetPlayer = require('./utils/raknet_player');
 
 
 class Server {
@@ -65,6 +66,7 @@ class Server {
       if (this.players.has(addr)) {
         this.players.delete(addr);
       }
+      RakNetPlayer.register_player(addr, new Player(connection, this));
     });
 
     this.raknet_server.on("connect", (connection) => {
@@ -127,6 +129,17 @@ class Server {
 
   registerDefaultGenerators() {
   }
+
+  getOnlinePlayers() {
+    let players = [];
+    RakNetPlayer.get_all_object_values().forEach((player) => {
+      console.log(player)
+        if (player instanceof Player) {
+            players.push(player);
+        }
+    });
+    return players;
+}
 
 }
 

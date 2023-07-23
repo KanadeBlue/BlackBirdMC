@@ -9,11 +9,11 @@ class ChunkRadiusUpdatedPacket extends PacketBase {
         super(PacketIdentifiers.CHUNK_RADIUS_UPDATED);
     }
 
-    read(stream) {
+    read_body(stream) {
         this.chunkRadius = stream.readSignedVarInt();
     }
 
-    write(stream) {
+    write_body(stream) {
         stream.writeSignedVarInt(this.chunkRadius);
     }
 }

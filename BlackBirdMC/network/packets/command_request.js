@@ -18,7 +18,7 @@ class CommandRequestPacket extends PacketBase {
      * Reads the packet body from the stream
      * @param {BinaryStream} stream 
      */
-    read(stream) {
+    read_body(stream) {
         this.command = StringCodec.read_string_lil(stream);
     }
 
@@ -26,7 +26,7 @@ class CommandRequestPacket extends PacketBase {
      * Writes the packet body to the stream
      * @param {BinaryStream} stream
      */ 
-    write(stream) {
+    write_body(stream) {
         StringCodec.write_string_lil(stream, this.command);
     }
 }

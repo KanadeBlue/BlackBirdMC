@@ -15,7 +15,7 @@ class LevelChunkPacket extends PacketBase {
     this.hashes = [];
   }
 
-  read(stream) {
+  read_body(stream) {
     this.x = stream.readSignedVarInt();
     this.z = stream.readSignedVarInt();
     this.subChunkCount = stream.readVarInt();
@@ -28,7 +28,7 @@ class LevelChunkPacket extends PacketBase {
     this.payload = stream.read(stream.readVarInt());
   }
 
-  write(stream) {
+  write_body(stream) {
     stream.writeSignedVarInt(this.x);
     stream.writeSignedVarInt(this.z);
     stream.writeVarInt(this.subChunkCount);

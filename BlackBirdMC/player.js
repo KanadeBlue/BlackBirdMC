@@ -143,9 +143,10 @@ class Player {
         levelChunk.cacheEnabled = false;
         levelChunk.x = chunk.x;
         levelChunk.z = chunk.z;
+        let payload_stream = new BinaryStream();
+        ChunkCodec.writeChunk(chunk, levelChunk.subChunkCount, this.server.resource.blockStatesMap.legacyToRuntime("minecraft:air", 0), payload_stream);
+        levelChunk.payload = payload_stream.buffer;
         let stream = new BinaryStream();
-        ChunkCodec.writeChunk(chunk, levelChunk.subChunkCount, this.server.resource.blockStatesMap.legacyToRuntime("minecraft:air", 0));
-        levelChunk.payload = stream.buffer;
         levelChunk.write(stream);
         this.send_packet(stream.buffer);
     }
@@ -163,12 +164,6 @@ class Player {
         this.send_packet(stream.buffer);
     }
 
-    handle_level_chunk_packet(stream) {
-        let level_chunk_packet = new LevelChunkPacket();
-        level_chunk_packet.write(stream);
-        this.send_packet(stream.buffer)
-    }
-
     handle_text_packet(stream) {
         let text_packet = new TextPacket();
         text_packet.write(stream);
@@ -178,7 +173,6 @@ class Player {
     handle_command_request_packet(stream) {
         let command_request_packet = new CommandRequestPacket();
         command_request_packet.write(stream);
-
 
         this.server.commands.dispatch(this, command_request_packet.command.substring(1));
         console.log(command_request_packet.command.substring(1));

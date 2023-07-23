@@ -1,16 +1,18 @@
 class BlockStorage {
     constructor(runtimeID) {
         this.blocks = new Array(4096);
-        this.palette = new Set([runtimeID]);
+        this.palette = [runtimeID];
     }
 
     getBlockRuntimeID(x, y, z) {
         const index = (x << 8) | (z << 4) | y;
-        return this.palette.has(this.blocks[index]) ? this.blocks[index] : 0;
+        return this.palette.includes(this.blocks[index]) ? this.blocks[index] : 0;
     }
 
     setBlockRuntimeID(x, y, z, runtimeID) {
-        this.palette.add(runtimeID);
+        if (!this.palette.includes(runtimeID)) {
+            this.palette.push(runtimeID);
+        }
         const index = (x << 8) | (z << 4) | y;
         this.blocks[index] = runtimeID;
     }
@@ -26,7 +28,7 @@ class BlockStorage {
     }
 
     isEmpty() {
-        return this.palette.size <= 1;
+        return this.palette.length <= 1;
     }
 }
 

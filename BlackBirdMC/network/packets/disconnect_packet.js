@@ -20,7 +20,7 @@ class DisconnectPacket extends PacketBase {
      * Reads the packet body from the stream
      * @param {BinaryStream} stream 
      */
-    read(stream) {
+    read_body(stream) {
         this.hide_notification = stream.readBool();
         this.message = StringCodec.read_string_vil(stream);
     }
@@ -29,7 +29,7 @@ class DisconnectPacket extends PacketBase {
      * Writes the packet body to the stream
      * @param {BinaryStream} stream
      */ 
-    write(stream) {
+    write_body(stream) {
         stream.writeBool(this.hide_notification);
         StringCodec.write_string_vil(stream, this.message);
     }

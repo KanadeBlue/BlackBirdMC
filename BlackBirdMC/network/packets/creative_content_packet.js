@@ -11,14 +11,14 @@ class CreativeContentPacket extends PacketBase {
      * Reads the packet body from the stream
      * @param {BinaryStream} stream 
      */
-    read(stream) {
+    read_body(stream) {
     }
 
     /**
      * Writes the packet body to the stream
      * @param {BinaryStream} stream
      */ 
-    write(stream) {
+    write_body(stream) {
         stream.writeVarInt(0);
     }
 }

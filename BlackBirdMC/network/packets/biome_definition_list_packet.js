@@ -15,7 +15,7 @@ class BiomeDefinitionListPacket extends PacketBase {
      * Reads the packet body from the stream
      * @param {BinaryStream} stream 
      */
-    read(stream) {
+    read_body(stream) {
         this.nbt = stream.readRemaining();
     }
 
@@ -23,7 +23,7 @@ class BiomeDefinitionListPacket extends PacketBase {
      * Writes the packet body to the stream
      * @param {BinaryStream} stream
      */ 
-    write(stream) {
+    write_body(stream) {
         stream.write(this.nbt);
     }
 }

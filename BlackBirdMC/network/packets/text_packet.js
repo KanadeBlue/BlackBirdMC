@@ -47,7 +47,7 @@ class TextPacket extends PacketBase {
     /** 
      * @param {binary_stream} stream 
      */
-    read(stream) {
+    read_body(stream) {
         this.type_id = stream.readUnsignedByte();
         this.needs_translation = stream.readBool();
         switch (this.type_id) {
@@ -82,7 +82,7 @@ class TextPacket extends PacketBase {
      * 
      * @param {binary_stream} stream 
      */
-    write(stream) {
+    write_body(stream) {
         stream.writeUnsignedByte(this.type_id);
         stream.writeBool(this.needs_translation);
         switch (this.type_id) {

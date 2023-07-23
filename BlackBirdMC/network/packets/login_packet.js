@@ -25,7 +25,7 @@ class LoginPacket extends PacketBase {
      * Reads the packet body from the stream
      * @param {BinaryStream} stream 
      */
-    read(stream) {
+    read_body(stream) {
         this.protocol_version = stream.readIntBE();
         let inner_stream = new BinaryStream(stream.read(stream.readVarInt()));
         this.identity = StringCodec.read_string_lil(inner_stream);
@@ -36,7 +36,7 @@ class LoginPacket extends PacketBase {
      * Writes the packet body to the stream
      * @param {BinaryStream} stream
      */ 
-    write(stream) {
+    write_body(stream) {
         stream.writeIntBE(this.protocolVersion);
         let inner_stream = new BinaryStream();
         StringCodec.write_string_lil(inner_stream, this.identity);

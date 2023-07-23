@@ -13,7 +13,7 @@ class NetworkChunkPublisherUpdatePacket extends PacketBase {
         super(PacketIdentifiers.NETWORK_CHUNK_PUBLISHER_UPDATE);
     }
 
-    read(stream) {
+    read_body(stream) {
         this.position = BlockCodec.readBlockCoordinates(stream);
         this.radius = stream.readVarInt();
         this.savedChunks = [];
@@ -24,7 +24,7 @@ class NetworkChunkPublisherUpdatePacket extends PacketBase {
         }
     }
 
-    write(stream) {
+    write_body(stream) {
         BlockCodec.writeBlockCoordinates(stream, this.position);
         stream.writeVarInt(this.radius);
         stream.writeIntLE(this.savedChunks.length);

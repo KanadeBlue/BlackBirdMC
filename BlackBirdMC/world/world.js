@@ -7,34 +7,27 @@ class World {
     constructor(generatorManager) {
         this.generatorManager = generatorManager;
         this.chunks = new Map();
-        this.generator = generatorManager.getGenerator("normal");
+        this.generator = generatorManager.getGenerator("flat");
     }
 
     async loadChunk(x, z) {
         const xz = CoordinateUtils.hashXZ(x, z);
         if (!this.chunks.has(xz)) {
             if (await this.loadChunksFromFile()) {
-                if (!this.chunks.has(xz)) {
-                    this.chunks.set(xz, null);
-                    const value = await this.generator.generate(x, z);
-                    this.chunks.set(xz, value);
-                }
-            } else {
-                console.log("Can't load chunk at xz: " + xz);
-                return null;
+                this.chunks.set(xz, await this.generator.generate(x, z));
             }
-        } 
-        return new Chunk(x, z, this.chunks.get(xz).runtimeID);
+            console.log(this.chunks.get(xz))
+            return new Chunk(x, z, this.chunks.get(xz).runtimeID);
+        }
     }
 
     async unloadChunk(x, z) {
         const xz = CoordinateUtils.hashXZ(x, z);
-        await this.saveChunk();
         this.chunks.delete(xz);
     }
 
     async pregenerateChunks(centerChunkX, centerChunkZ) {
-        const CHUNK_RADIUS = 6; // 12x12 area.
+        const CHUNK_RADIUS = 3;
         const allChunks = new Map();
 
         for (let offsetX = -CHUNK_RADIUS; offsetX <= CHUNK_RADIUS; offsetX++) {
@@ -46,8 +39,7 @@ class World {
             }
         }
 
-        const filePath = `./bbmc/worlds/${BBMC.config.Vanilla.Server.world}/chunks.json`;
-        await this.saveChunksToFile(allChunks, filePath);
+        await this.saveChunksToFile(allChunks);
     }
 
     async loadChunksFromFile() {
@@ -67,12 +59,12 @@ class World {
         }
     }
 
-    async saveChunksToFile(allChunks, saveDirectory) {
-        const filename = `${saveDirectory}`;
+    async saveChunksToFile(allChunks) {
+        const filePath = `./bbmc/worlds/${BBMC.config.Vanilla.Server.world}/chunks.json`;
         const compressedData = this.compressData(Array.from(allChunks));
 
         try {
-            await fs.writeFile(filename, compressedData);
+            await fs.writeFile(filePath, compressedData);
             console.log('All compressed chunks saved to file.');
         } catch (err) {
             console.error('Error saving compressed chunks to file:', err);

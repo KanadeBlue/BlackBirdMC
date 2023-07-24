@@ -47,7 +47,7 @@ class Player {
         this.server = server;
         this.position = new Vector3F(); // TEMP UP UNLTI WORLDS ARE MADE
         this.position.x = 0.0;
-        this.position.y = 8.0;
+        this.position.y = 1.0;
         this.position.z = 0.0;
     }
 
@@ -97,12 +97,6 @@ class Player {
                         break;
                 }
                 break;
-            case PacketIdentifiers.TEXT:
-                this.handle_text_packet(stream);
-                break
-            case PacketIdentifiers.COMMAND_REQUEST:
-                this.handle_command_request_packet(stream);
-                break;
             case PacketIdentifiers.REQUEST_CHUNK_RADIUS:
                 this.request_chunk_radius_packet();
                 break;
@@ -123,13 +117,30 @@ class Player {
     }
 
     send_chunks() {
-        return new Promise((resolve) => {
+        return new Promise(async (resolve) => {
             this.send_network_chunk_publisher_update();
-            for (let chunkX = -this.chunkRadius; chunkX <= this.chunkRadius; ++chunkX) {
-                for (let chunkZ = -this.chunkRadius; chunkZ <= this.chunkRadius; ++chunkZ) {
-                    this.server.world.loadChunk(chunkX + (this.position.x >> 4), chunkZ + (this.position.z >> 4)).then((chunk) => {
-                        this.send_chunk(chunk);
-                    })
+    
+            // Determine the chunk range to load
+            const minX = -this.chunkRadius;
+            const maxX = this.chunkRadius;
+            const minZ = -this.chunkRadius;
+            const maxZ = this.chunkRadius;
+    
+            const chunkPromises = [];
+            
+            const batchSize = 5;
+            for (let chunkX = minX; chunkX <= maxX; chunkX += batchSize) {
+                for (let chunkZ = minZ; chunkZ <= maxZ; chunkZ += batchSize) {
+                    const batchPromises = [];
+                    for (let x = chunkX; x < chunkX + batchSize; x++) {
+                        for (let z = chunkZ; z < chunkZ + batchSize; z++) {
+                            batchPromises.push(
+                                this.server.world.loadChunk(x + (this.position.x >> 4), z + (this.position.z >> 4))
+                            );
+                        }
+                    }
+                    const chunks = await Promise.all(batchPromises);
+                    chunks.forEach((chunk) => this.send_chunk(chunk));
                 }
             }
             resolve();

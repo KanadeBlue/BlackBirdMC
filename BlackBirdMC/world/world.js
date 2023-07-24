@@ -60,7 +60,7 @@ class World {
                 this.chunks.set(xz, chunk);
             }
             console.log('Successfully loaded chunks from file.');
-            return true;
+            return this.chunks;
         } catch (err) {
             console.error('Error loading chunks from file:', err);
             return false;

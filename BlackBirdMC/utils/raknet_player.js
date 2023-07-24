@@ -1,5 +1,5 @@
 class RakNetPlayer {
-    players_data;
+    static players_data = {};
 
     /**
      * Get the player associated with the given address.
@@ -17,9 +17,7 @@ class RakNetPlayer {
      * @returns {void}
      */
     static register_player(str_addr, player) {
-        if (!(str_addr in this.players_data)) {
-            this.players_data[str_addr] = player;
-        }
+        this.players_data[str_addr] = player;
     }
 
     /**

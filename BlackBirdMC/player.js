@@ -19,7 +19,7 @@ const CreativeContentPacket = require("./network/packets/creative_content_packet
 const { item_states } = require("./resources/item_states.json");
 const ItemState = require("./network/types/item_state");
 const TextPacket = require("./network/packets/text_packet");
-const CommandRequestPacket = require("./network/packets/command_request");
+const CommandRequestPacket = require("./network/packets/command_request_packet");
 const LevelChunkPacket = require("./network/packets/level_chunk_packet");
 const ChunkRadiusUpdatedPacket = require("./network/packets/chunk_radius_updated_packet");
 const NetworkChunkPublisherUpdatePacket = require("./network/packets/network_chunk_publisher_update");
@@ -119,15 +119,12 @@ class Player {
     send_chunks() {
         return new Promise(async (resolve) => {
             this.send_network_chunk_publisher_update();
-    
-            // Determine the chunk range to load
+
             const minX = -this.chunkRadius;
             const maxX = this.chunkRadius;
             const minZ = -this.chunkRadius;
             const maxZ = this.chunkRadius;
-    
-            const chunkPromises = [];
-            
+
             const batchSize = 5;
             for (let chunkX = minX; chunkX <= maxX; chunkX += batchSize) {
                 for (let chunkZ = minZ; chunkZ <= maxZ; chunkZ += batchSize) {
@@ -321,7 +318,7 @@ class Player {
         start_game.chat_restriction_level = 0;
         start_game.disable_player_interactions = false;
         start_game.level_id = "";
-        start_game.world_name = "New World";
+        start_game.world_name = "World";
         start_game.premium_world_template_id = "cd353ae5-09f1-49ec-ba24-c99e9acc5e2e";
         start_game.is_trial = false;
         start_game.movement_authority = 0;

@@ -12,11 +12,10 @@ class World {
 
     async loadChunk(x, z) {
         const xz = CoordinateUtils.hashXZ(x, z);
-        if (!this.chunks.has(xz)) {
-            if (await this.loadChunksFromFile()) {
+        if (await this.loadChunksFromFile()) {
+            if (!this.chunks.has(xz)) {
                 this.chunks.set(xz, await this.generator.generate(x, z));
             }
-            console.log(this.chunks.get(xz))
             return new Chunk(x, z, this.chunks.get(xz).runtimeID);
         }
     }
@@ -45,30 +44,19 @@ class World {
     async loadChunksFromFile() {
         const filePath = `./bbmc/worlds/${BBMC.config.Vanilla.Server.world}/chunks.json`;
 
-        try {
-            const compressedData = await fs.readFile(filePath);
-            const data = this.decompressData(compressedData);
-            for (const [coords, chunk] of data) {
-                const xz = CoordinateUtils.hashXZ(coords.x, coords.z);
-                this.chunks.set(xz, chunk);
-            }
-            return true;
-        } catch (err) {
-            console.error('Error loading chunks from file:', err);
-            return false;
+        const compressedData = await fs.readFile(filePath);
+        const data = this.decompressData(compressedData);
+        for (const [coords, chunk] of data) {
+            const xz = CoordinateUtils.hashXZ(coords.x, coords.z);
+            this.chunks.set(xz, chunk);
         }
+        return true;
     }
 
     async saveChunksToFile(allChunks) {
         const filePath = `./bbmc/worlds/${BBMC.config.Vanilla.Server.world}/chunks.json`;
         const compressedData = this.compressData(Array.from(allChunks));
-
-        try {
-            await fs.writeFile(filePath, compressedData);
-            console.log('All compressed chunks saved to file.');
-        } catch (err) {
-            console.error('Error saving compressed chunks to file:', err);
-        }
+        await fs.writeFile(filePath, compressedData);
     }
 
     compressData(data) {

@@ -310,7 +310,7 @@ class Player {
         start_game.chat_restriction_level = 0;
         start_game.disable_player_interactions = false;
         start_game.level_id = "";
-        start_game.world_name = "BlackBirdMC";
+        start_game.world_name = "New World";
         start_game.premium_world_template_id = "cd353ae5-09f1-49ec-ba24-c99e9acc5e2e";
         start_game.is_trial = false;
         start_game.movement_authority = 0;

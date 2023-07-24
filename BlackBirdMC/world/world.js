@@ -1,4 +1,6 @@
 const CoordinateUtils = require("../utils/coordinate_utils");
+const zlib = require('zlib');
+const fs = require("fs");
 
 class World {
     generatorManager;
@@ -10,6 +12,7 @@ class World {
         this.chunks = new Map();
         this.generator = generatorManager.getGenerator("overworld");
     }
+    
 
     async loadChunk(x, z) {
         const xz = CoordinateUtils.hashXZ(x, z);
@@ -34,8 +37,43 @@ class World {
         }
     }
 
-    async saveChunk(x, z) {
-        // Implementation for saving chunk
+    async pregenerateChunks(centerChunkX, centerChunkZ) {
+        const CHUNK_RADIUS = 6; // 12x12 area.
+        const allChunks = [];
+
+        for (let offsetX = -CHUNK_RADIUS; offsetX <= CHUNK_RADIUS; offsetX++) {
+            for (let offsetZ = -CHUNK_RADIUS; offsetZ <= CHUNK_RADIUS; offsetZ++) {
+                const chunkX = centerChunkX + offsetX;
+                const chunkZ = centerChunkZ + offsetZ;
+
+                const chunk = await this.generator.generate(chunkX, chunkZ);
+                allChunks.push({ x: chunkX, z: chunkZ, data: chunk });
+            }
+        }
+
+        const filePath = './bbmc/worlds/' + BBMC.config.Vanilla.Server.world;
+        this.saveChunksToFile(allChunks, filePath);
+    }
+    
+    saveChunksToFile(allChunks, saveDirectory) {
+        const filename = `${saveDirectory}/chunks.json`;
+        const compressedData = this.compressData(allChunks);
+    
+        fs.writeFile(filename, compressedData, (err) => {
+            if (err) {
+                console.error('Error saving compressed chunks to file:', err);
+            } else {
+                console.log('All compressed chunks saved to file.');
+            }
+        });
+    }
+
+    compressData(data) {
+        return zlib.deflateSync(JSON.stringify(data));
+    }
+    
+    decompressData(compressedData) {
+        return JSON.parse(zlib.inflateSync(compressedData).toString());
     }
 
     getGenerator() {

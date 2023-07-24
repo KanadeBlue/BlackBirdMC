@@ -1,8 +1,8 @@
 const Chunk = require("../chunk/chunk");
-const World = require("../world_base");
+const WorldBase = require("../world_base");
 const Perlin = require("../perlin");
 
-class Overworld extends World {
+class Overworld extends WorldBase {
     static generatorName = "overworld";
 
     generate(chunkX, chunkZ) {
@@ -33,7 +33,7 @@ class Overworld extends World {
                         const biome = biomeMap[x][z];
                         const noise = perlin.noise(((chunkX << 4) + x) * 0.0625, y * 0.0625, ((chunkZ << 4) + z) * 0.0625);
                         if (noise < 0.25) {
-                            //ocean.generate(x, y, z, chunkX, chunkZ, chunk, this.blockStatesMap);
+                            chunk.setBlockRuntimeID(x, y, z, 0, this.blockStatesMap.legacyToRuntime(`minecraft:grass`, 0));
                         } else {
                             let blockType = 'grass';
 

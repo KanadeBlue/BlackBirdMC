@@ -69,6 +69,8 @@ class Server {
       }
     });
 
+    new World(this.generator).pregenerateChunks(0, 0);
+
     this.raknet_server.on("connect", (connection) => {
       const addr = connection.address.toString();
 

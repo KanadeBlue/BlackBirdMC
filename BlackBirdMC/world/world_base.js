@@ -1,4 +1,4 @@
-class World {
+class WorldBase {
     static generatorName;
     blockStatesMap;
     
@@ -9,4 +9,4 @@ class World {
     generate(x, z) {}
 }
 
-module.exports = World;
+module.exports = WorldBase;

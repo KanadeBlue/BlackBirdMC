@@ -3,6 +3,7 @@ type Configuration = {
     Server: {
       ip: string;
       port: number;
+      world: string;
       version: [num, num, num];
       maxPlayers: num;
     };

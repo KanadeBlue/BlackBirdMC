@@ -1,4 +1,5 @@
 const CoordinateUtils = require("../utils/coordinate_utils");
+const Chunk = require('./chunk/chunk');
 const zlib = require('zlib');
 const fs = require("fs").promises;
 
@@ -22,6 +23,9 @@ class World {
                 console.log("Can't load chunk at xz: " + xz);
                 return null;
             }
+        } else if (this.chunks.has(xz)) {
+            console.log(this.chunks.get(xz))
+            return new Chunk(x, z, this.chunks.get(xz).runtimeID);
         }
         return this.chunks.get(xz);
     }
@@ -59,8 +63,7 @@ class World {
                 const xz = CoordinateUtils.hashXZ(coords.x, coords.z);
                 this.chunks.set(xz, chunk);
             }
-            console.log('Successfully loaded chunks from file.');
-            return this.chunks;
+            return true;
         } catch (err) {
             console.error('Error loading chunks from file:', err);
             return false;

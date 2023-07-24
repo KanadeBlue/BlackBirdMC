@@ -1,9 +1,9 @@
 const Chunk = require("../chunk/chunk");
-const WorldBase = require("../world_base");
+const Base = require("../base");
 const Perlin = require("../perlin");
 
-class Overworld extends WorldBase {
-    static generatorName = "overworld";
+class Normal extends Base {
+    static generatorName = "normal";
 
     generate(chunkX, chunkZ) {
         return new Promise((resolve) => {
@@ -53,4 +53,4 @@ class Overworld extends WorldBase {
     }
 }
 
-module.exports = Overworld;
+module.exports = Normal;

@@ -14,7 +14,7 @@ const Query = require("./api/Query");
 const Advertisement = require("./advertisement");
 const GeneratorManager = require("./utils/generator_manager");
 const ResourceManager = require("./utils/resource_manager");
-const Overworld = require("./world/generators/overworld");
+const Normal = require("./world/generators/normal");
 const World = require("./world/world");
 const Blocks = require("./block/block_list");
 const RakNetPlayer = require('./utils/raknet_player');
@@ -33,7 +33,7 @@ class Server {
     this.resource = new ResourceManager();
     this.resource.loadResources();
     this.generator = new GeneratorManager(this.resource.blockStatesMap);
-    this.generator.registerGenerator(Overworld);
+    this.generator.registerGenerator(Normal);
     this.world = new World(this.generator);
 
     Blocks.refresh();

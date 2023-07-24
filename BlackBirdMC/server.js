@@ -125,7 +125,7 @@ class Server {
       ErrorHandler.write_error(e);
       console.error(ColorFormat.format_color(e.stack, "Red"));
       console.error(ColorFormat.format_color("Error happened and crashed the server.", "Red"));
-      return;
+      throw e;
     });
 
     console.info(this.language.getContent("server", "server-enabled", {"time": `${(Date.now() - startTime) / 1000}`}), ColorFormat.format_color("Server", "bold"));

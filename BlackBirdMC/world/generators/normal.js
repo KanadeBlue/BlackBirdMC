@@ -1,6 +1,6 @@
 const Chunk = require("../chunk/chunk");
 const Base = require("../base");
-const Perlin = require("../perlin");
+const PerlinNoise = require("../perlin");
 
 class Normal extends Base {
     static generatorName = "normal";
@@ -9,13 +9,13 @@ class Normal extends Base {
         return new Promise((resolve) => {
             let air = this.blockStatesMap.legacyToRuntime("minecraft:air", 0);
             let chunk = new Chunk(chunkX, chunkZ, air);
-            let perlin = new Perlin();
+            let perlin = new PerlinNoise();
             let biomeMap = [];
 
             for (let x = 0; x < 16; ++x) {
                 biomeMap[x] = [];
                 for (let z = 0; z < 16; ++z) {
-                    const noise = perlin.noise(((chunkX << 4) + x) * 0.0625, ((chunkZ << 4) + z) * 0.0625, 0);
+                    const noise = perlin.perlinNoise(((chunkX << 4) + x) * 0.0625, ((chunkZ << 4) + z) * 0.0625, 0);
 
                     if (noise > 0.6) {
                         biomeMap[x][z] = 'mountains';
@@ -31,7 +31,7 @@ class Normal extends Base {
                 for (let z = 0; z < 16; ++z) {
                     for (let y = 0; y < 16; ++y) {
                         const biome = biomeMap[x][z];
-                        const noise = perlin.noise(((chunkX << 4) + x) * 0.0625, y * 0.0625, ((chunkZ << 4) + z) * 0.0625);
+                        const noise = perlin.perlinNoise(((chunkX << 4) + x) * 0.0625, y * 0.0625, ((chunkZ << 4) + z) * 0.0625);
                         if (noise < 0.25) {
                             chunk.setBlockRuntimeID(x, y, z, 0, this.blockStatesMap.legacyToRuntime(`minecraft:grass`, 0));
                         } else {

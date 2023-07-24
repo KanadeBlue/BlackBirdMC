@@ -23,11 +23,8 @@ class World {
                 console.log("Can't load chunk at xz: " + xz);
                 return null;
             }
-        } else if (this.chunks.has(xz)) {
-            console.log(this.chunks.get(xz))
-            return new Chunk(x, z, this.chunks.get(xz).runtimeID);
-        }
-        return this.chunks.get(xz);
+        } 
+        return new Chunk(x, z, this.chunks.get(xz).runtimeID);
     }
 
     async unloadChunk(x, z) {

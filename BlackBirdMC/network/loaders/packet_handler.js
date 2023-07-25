@@ -1,6 +1,8 @@
 const ColorFormat = require("../../utils/color_format");
 const PacketIdentifiers = require("../packet_identifiers");
+const PacketsList = require("../packet_list");
 const GamePacket = require("../packets/game_packet");
+const LoginPacket = require("../packets/login_packet");
 
 class PacketHandler {
     static handler(stream, connection, server) {
@@ -8,6 +10,8 @@ class PacketHandler {
         if (server.players.has(addr)) {
             let player = server.players.get(addr);
             let packet_id = stream.readUnsignedByte();
+            let packet = PacketsList.get(stream.readVarInt());
+            console.log(packet)
             switch (packet_id) {
                 case PacketIdentifiers.GAME: 
                     var game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);
@@ -17,6 +21,10 @@ class PacketHandler {
                             player.handle_packet(buffer);
                         }
                     });
+                    break;
+                case PacketIdentifiers.LOGIN:
+                    var login_packet = new LoginPacket();
+                    login_packet.read(stream); 
                     break;
             }
             console.debug(`${connection.address.name}:${connection.address.port} sent a packet`, ColorFormat.format_color('Client', 'bold'));

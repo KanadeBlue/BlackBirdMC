@@ -28,6 +28,7 @@ const RequestChunkRadiusPacket = require("./network/packets/request_chunk_radius
 const Vector3F = require("./network/constants/vector3f");
 const ChunkCodec = require("./network/codecs/chunk_codec");
 const DisconnectPacket = require("./network/packets/disconnect_packet");
+const LoginPacket = require("./network/packets/login_packet");
 
 
 class Player {

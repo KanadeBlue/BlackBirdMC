@@ -5,7 +5,8 @@ class PacketsList {
 
     static refresh() {
         fs.readdirSync(`${__dirname}/packets`).forEach((file) => {
-            this.add(require(`../packets/${file.replace(".js", "")}`));
+            const packets = require(`${__dirname}/packets/${file}`);
+            this.add(packets);
         });
     }
 

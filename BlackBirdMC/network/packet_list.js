@@ -12,13 +12,12 @@ class PacketsList {
 
     static add(packet) {
         if (!(packet.id in this.#packets)) {
-            this.#packets[packet.id] = new packet();
+            this.#packets[new packet().id] = new packet();
         }
     }
 
     static get(packetID) {
-        if (!(packetID in this.#packets)) return;
-        return this.#packets[packetID];
+        return this.#packets[packetID] ?? null;
     }
 
     static getAll() {

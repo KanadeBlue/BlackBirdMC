@@ -10,8 +10,6 @@ class PacketHandler {
         if (server.players.has(addr)) {
             let player = server.players.get(addr);
             let packet_id = stream.readUnsignedByte();
-            let packet = PacketsList.get(stream.readVarInt());
-            console.log(packet)
             switch (packet_id) {
                 case PacketIdentifiers.GAME: 
                     var game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);

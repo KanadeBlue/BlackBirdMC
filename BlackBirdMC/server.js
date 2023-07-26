@@ -1,4 +1,6 @@
 /* eslint-disable no-undef */
+
+// Imports and Destructuring
 const { RakNetServer, InternetAddress } = require("bbmc-raknet");
 const Player = require("./player");
 const Language = require("./language/language");
@@ -19,11 +21,13 @@ const World = require("./world/world");
 const Blocks = require("./block/block_list");
 const RakNetPlayer = require('./utils/raknet_player');
 const PacketsList = require("./network/packet_list");
-
+const Normal = require("./world/generators/normal");
 
 class Server {
   constructor() {
     const startTime = Date.now();
+
+    // Initialize properties
     this.players = new Map();
     this.language = new Language(BBMC.config.BBMC.language);
     this.commands = new CommandsList();
@@ -37,10 +41,11 @@ class Server {
     this.generator.registerGenerator(Flat);
     this.world = new World(this.generator);
 
+    // Refresh packets and blocks
     PacketsList.refresh();
-
     Blocks.refresh();
 
+    // Query setup
     if (BBMC.config.BBMC.Protocol.Query.enable) {
       const queryInfo = {
         host: BBMC.config.Vanilla.Server.ip,
@@ -52,17 +57,18 @@ class Server {
         plugins: [],
         engine: `${ServerInfo.engine} ${ServerInfo.version}`,
       };
-
       this.query_info = Object.assign({}, queryInfo);
       this.query = new Query(this.query_info);
     }
 
+    // RakNet Server setup
     this.raknet_server = new RakNetServer(
       new InternetAddress(BBMC.config.Vanilla.Server.host, BBMC.config.Vanilla.Server.port, 4),
       11
     );
     this.raknet_server.message = this.advertisement.getData();
 
+    // Event handlers for RakNet Server
     this.raknet_server.on("disconnect", (address) => {
       console.info(`${address.name}:${address.port} disconnected.`, ColorFormat.format_color("Client", "bold"));
       const addr = address.toString();
@@ -76,17 +82,13 @@ class Server {
 
     this.raknet_server.on("connect", (connection) => {
       const addr = connection.address.toString();
-
       RakNetPlayer.register_player(addr, new Player(connection, this));
-      /**
-       * @type {Player}
-       */
-      let player;
 
+      // Player handling
+      let player;
       if (!this.players.has(addr)) {
         player = this.players.set(addr, new Player(connection, this)).get(addr);
       }
-
 
       if (this.players.size > BBMC.config.Vanilla.Server.max_players) {
         player.send_play_status(PlayStatus.FAILED_SERVER_FULL);
@@ -104,16 +106,16 @@ class Server {
       PacketHandler.handler(stream, connection, this);
     });
 
+    // Plugin setup and lifecycle events
     console.info(this.language.getContent("server", "server-listening", {"ip": "0.0.0.0", "port": BBMC.config.Vanilla.Server.port}), ColorFormat.format_color("Server", "bold"));
 
     (async () => {
       await this.plugins.start();
       this.plugins.doTask("onEnable");
-      
-
       this.query_info.plugins = Object.keys(this.plugins.plugins).map((key) => this.plugins.plugins[key].options.name);
     })();
 
+    // Process event handlers
     process.on('SIGINT', () => {
       this.plugins.doTask('onDisable');
       process.exit(0);
@@ -134,20 +136,25 @@ class Server {
     console.info(this.language.getContent("server", "server-enabled", {"time": `${(Date.now() - startTime) / 1000}`}), ColorFormat.format_color("Server", "bold"));
   }
 
-  registerDefaultGenerators() {
-  }
+  /**
+     * @type {World}
+   **/
 
+
+  /**
+     * @type {Player}
+     * @return "All online players"
+   **/
   getOnlinePlayers() {
     let players = [];
     RakNetPlayer.get_all_object_values().forEach((player) => {
       console.log(player)
-        if (player instanceof Player) {
-            players.push(player);
-        }
+      if (player instanceof Player) {
+          players.push(player);
+      }
     });
     return players;
-}
-
+  }
 }
 
 module.exports = Server;

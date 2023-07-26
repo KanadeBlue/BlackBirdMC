@@ -43,6 +43,7 @@ class World {
 
     async loadChunksFromFile() {
         const filePath = `./bbmc/worlds/${BBMC.config.Vanilla.Server.world}/chunks.json`;
+        if (!filePath) return false;
 
         const compressedData = await fs.readFile(filePath);
         const data = this.decompressData(compressedData);

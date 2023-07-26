@@ -43,7 +43,7 @@ class World {
 
     async loadChunksFromFile() {
         const filePath = `./bbmc/worlds/${BBMC.config.Vanilla.Server.world}/chunks.json`;
-        if (!filePath) return false;
+        if (!filePath) return;
 
         const compressedData = await fs.readFile(filePath);
         const data = this.decompressData(compressedData);
@@ -56,6 +56,7 @@ class World {
 
     async saveChunksToFile(allChunks) {
         const filePath = `./bbmc/worlds/${BBMC.config.Vanilla.Server.world}/chunks.json`;
+        if (!filePath) return false;
         const compressedData = this.compressData(Array.from(allChunks));
         await fs.writeFile(filePath, compressedData);
     }

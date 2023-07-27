@@ -1,33 +1,33 @@
-const instance = require("../../../start")
-
+const instance = require("../../../start");
 /**
  * 
- * @param {any} name 
+ * @param {any} options 
+ * @param {any} instance 
  */
 function API_1(options) {
-  const name = options.name
+  const name = options.name;
   const log = {
     info(text) {
-      console.info(text, name)
+      console.info(text, name);
     },
 
     warn(text) {
-      console.warn(text, name)
+      console.warn(text, name);
     },
 
     error(text) {
-      console.error(text, name)
+      console.error(text, name);
     },
 
     debug(text) {
-      console.debug(text, name)
+      console.debug(text, name);
     },
-  }
+  };
 
   return {
     getLogger: () => log,
     getServer: () => instance,
-  }
+  };
 }
 
-module.exports = API_1
+module.exports = API_1;

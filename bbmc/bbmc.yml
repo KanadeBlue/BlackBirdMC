@@ -6,7 +6,7 @@ Vanilla:
     motd: "BlackBirdMC Server"
     version: [1, 20, 10]
     max_players: 20
-    whitelist: true
+    whitelist: false
 
 BBMC:
   debug: true

@@ -24,10 +24,10 @@ const PacketsList = require("./network/packet_list");
 const Normal = require("./world/generators/normal");
 
 class Server {
+  startTime = Date.now();
+  
   constructor() {
-    const startTime = Date.now();
 
-    // Initialize properties
     this.players = new Map();
     this.language = new Language(BBMC.config.BBMC.language);
     this.commands = new CommandsList();
@@ -38,8 +38,9 @@ class Server {
     this.resource = new ResourceManager();
     this.resource.loadResources();
     this.generator = new GeneratorManager(this.resource.blockStatesMap);
-    this.generator.registerGenerator(Flat);
     this.world = new World(this.generator);
+
+    this.register_generation();
 
     // Refresh packets and blocks
     PacketsList.refresh();
@@ -130,20 +131,23 @@ class Server {
       ErrorHandler.write_error(e);
       console.error(ColorFormat.format_color(e.stack, "Red"));
       console.error(ColorFormat.format_color("Error happened and crashed the server.", "Red"));
-      throw e;
     });
 
-    console.info(this.language.getContent("server", "server-enabled", {"time": `${(Date.now() - startTime) / 1000}`}), ColorFormat.format_color("Server", "bold"));
+    console.info(this.language.getContent("server", "server-enabled", {"time": `${(Date.now() - this.startTime) / 1000}`}), ColorFormat.format_color("Server", "bold"));
   }
 
   /**
      * @type {World}
    **/
 
+  register_generation() {
+    this.generator.registerGenerator(Flat);
+    this.generator.registerGenerator(Normal);
+  }
 
   /**
      * @type {Player}
-     * @return "All online players"
+     * @return {RakNetPlayer, players_data}
    **/
   getOnlinePlayers() {
     let players = [];

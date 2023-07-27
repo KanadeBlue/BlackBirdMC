@@ -2,8 +2,8 @@
  * @abstract
  */
 class PluginBase {
-  options
-  api
+  options;
+  api;
 
   /**
    * @abstract

@@ -5,14 +5,11 @@ class BlocksList {
   static dirPath = `${__dirname}/default`;
 
   static async refresh() {
-    try {
       const files = await fs.readdir(this.dirPath);
       for (const file of files) {
         const block = await import(`${this.dirPath}/${file}`);
         this.add(new block.default());
       }
-    } catch (err) {
-    }
   }
 
   static add(block) {
@@ -39,11 +36,7 @@ class BlocksList {
 }
 
 (async () => {
-  try {
     await BlocksList.refresh();
-  } catch (err) {
-    console.error("Error initializing BlocksList:", err);
-  }
 })();
 
 module.exports = BlocksList;

@@ -1,3 +1,5 @@
+const server = require('../../start');
+
 class PluginCommand {
   constructor(options) {
     if (typeof options === 'object') {

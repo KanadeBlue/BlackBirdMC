@@ -13,6 +13,11 @@ class PacketHandler {
       const packet_id = stream.readUnsignedByte();
 
       const packetHandlers = {
+        [LOGIN]: () => {
+          const login_packet = new LoginPacket();
+          login_packet.read(stream);
+          LoginHandle.handler(login_packet, player);
+        },
         [GAME]: () => {
           const game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);
           game_packet.read(stream);
@@ -21,11 +26,6 @@ class PacketHandler {
               player.handle_packet(buffer);
             }
           });
-        },
-        [LOGIN]: () => {
-          const login_packet = new LoginPacket();
-          login_packet.read(stream);
-          LoginHandle.handler(login_packet, player);
         },
       };
 

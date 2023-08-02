@@ -80,6 +80,7 @@ class Player {
             case PacketIdentifiers.LOGIN:
                 this.send_play_status(PlayStatus.LOGIN_SUCCESS);
                 this.send_resource_packs_info();
+                this.player_login();
                 break;
             case PacketIdentifiers.RESOURCE_PACK_CLIENT_RESPONSE:
                 let resource_pack_client_response = new ResourcePackClientResponsePacket();
@@ -102,6 +103,10 @@ class Player {
                 this.request_chunk_radius_packet();
                 break;
         }
+    }
+
+    player_login() {
+                                              
     }
 
     

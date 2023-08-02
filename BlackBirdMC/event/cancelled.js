@@ -1,7 +1,9 @@
 class Cancelled {
     eventCancelled = false;
 
-    is_cancelled() {
+    static is_cancelled() {
         return this.eventCancelled;
     }
 }
+
+module.exports = Cancelled;

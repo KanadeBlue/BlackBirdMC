@@ -1,33 +1,42 @@
 const ColorFormat = require("../../utils/color_format");
-const PacketIdentifiers = require("../packet_identifiers");
-const PacketsList = require("../packet_list");
+const { GAME, LOGIN } = require("../packet_identifiers");
 const GamePacket = require("../packets/game_packet");
 const LoginPacket = require("../packets/login_packet");
+const LoginHandle = require("./handler/login_handle");
 
 class PacketHandler {
-    static handler(stream, connection, server) {
-        let addr = connection.address.toString();
-        if (server.players.has(addr)) {
-            let player = server.players.get(addr);
-            let packet_id = stream.readUnsignedByte();
-            switch (packet_id) {
-                case PacketIdentifiers.GAME: 
-                    var game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);
-                    game_packet.read(stream);
-                    game_packet.buffers.forEach((buffer) => {
-                        if (buffer.length) {
-                            player.handle_packet(buffer);
-                        }
-                    });
-                    break;
-                case PacketIdentifiers.LOGIN:
-                    var login_packet = new LoginPacket();
-                    login_packet.read(stream); 
-                    break;
+  static handler(stream, connection, server) {
+    const addr = connection.address.toString();
+
+    if (server.players.has(addr)) {
+      const player = server.players.get(addr);
+      const packet_id = stream.readUnsignedByte();
+
+      const packetHandlers = {
+        [GAME]: () => {
+          const game_packet = new GamePacket(player.enable_compression, player.compression_algorithm);
+          game_packet.read(stream);
+          game_packet.buffers.forEach((buffer) => {
+            if (buffer.length) {
+              player.handle_packet(buffer);
             }
-            console.debug(`${connection.address.name}:${connection.address.port} sent a packet`, ColorFormat.format_color('Client', 'bold'));
-        }
+          });
+        },
+        [LOGIN]: () => {
+          const login_packet = new LoginPacket();
+          login_packet.read(stream);
+          LoginHandle.handler(login_packet, player);
+        },
+      };
+
+      const handlerFunc = packetHandlers[packet_id];
+      if (handlerFunc) {
+        handlerFunc();
+      }
+
+      console.debug(`${connection.address.name}:${connection.address.port} sent a packet`, ColorFormat.format_color('Client', 'bold'));
     }
+  }
 }
 
 module.exports = PacketHandler;

@@ -14,7 +14,7 @@ class ResourceManager {
     creativeItems;
 
     readFile(name) {
-        return fs.readFileSync(path.join(__dirname, `..${path.sep}mcdata${path.sep}${name}`));
+        return fs.readFileSync(path.join(__dirname, `..${path.sep}mc_data${path.sep}${name}`));
     }
 
     readBiomeDefinitionList() {

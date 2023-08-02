@@ -19,8 +19,8 @@ class HelpCMD extends Command {
 
         if (args.length > 0 && !isNaN(args[args.length - 1])) {
             page = Math.max(1, parseInt(args[args.length - 1]));
-            args.pop(); // Remove the last argument (page number) from the args array
-            command = args.join(" ").toLowerCase(); // Reconstruct the command string without the page number
+            args.pop(); 
+            command = args.join(" ").toLowerCase();
         }
 
         if (command === "") {

@@ -7,8 +7,8 @@ class BlocksList {
   static async refresh() {
       const files = await fs.readdir(this.dirPath);
       for (const file of files) {
-        const block = await import(`${this.dirPath}/${file}`);
-        this.add(new block.default());
+        const block = await require(`${this.dirPath}/${file}`);
+        this.add(new block());
       }
   }
 

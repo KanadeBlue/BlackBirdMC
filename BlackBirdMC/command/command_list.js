@@ -9,6 +9,7 @@ class CommandsList {
 
     commands;
     alias;
+    
     constructor() {
         this.commands = {};
         this.alias = {};

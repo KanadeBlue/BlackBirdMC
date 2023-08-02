@@ -22,6 +22,7 @@ const Blocks = require("./block/block_list");
 const RakNetPlayer = require('./utils/raknet_player');
 const PacketsList = require("./network/packet_list");
 const Normal = require("./world/generators/normal");
+const EventListner = require("./event/event_list");
 
 class Server {
   startTime = Date.now();
@@ -31,6 +32,7 @@ class Server {
     this.players = new Map();
     this.language = new Language(BBMC.config.BBMC.language);
     this.commands = new CommandsList();
+    this.events = new EventListner();
     this.console_command_reader = new CommandReader(this).handle();
     this.plugins = new PluginManager();
     this.whitelist = require('../bbmc/whitelist.json');
